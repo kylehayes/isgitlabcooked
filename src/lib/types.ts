@@ -46,7 +46,7 @@ export interface Incident {
 }
 
 export interface DurationEntry {
-  /** Minutes from created_at to mitigation. */
+  /** Minutes from created_at to mitigation, or -1 when unknown (q: 2). */
   m: number;
   q: DurationQuality;
 }
@@ -68,6 +68,18 @@ export interface SyncMeta {
   };
   /** Up to 25 titles that fell through to the `other` bucket, for classifier tuning. */
   unclassifiedSample: string[];
+  /**
+   * Audit trail for test/scaffolding issues filtered out of the dataset
+   * (titles like "blah", "[TEST] ...", "Incident Working doc: ..."). Excluded
+   * rows are written to data/excluded.ndjson rather than dropped, so this is
+   * always reversible. Optional so older meta.json files still parse.
+   */
+  excludedNonIncidents?: {
+    total: number;
+    byYear: Record<string, number>;
+    byRule: Record<string, number>;
+    iids: number[];
+  };
 }
 
 /** data/status-components.json — the 23 Status.io components, snapshotted each sync. */
@@ -88,7 +100,12 @@ export interface LiveComponent {
   name: string;
   status: string;
   status_code: StatusCode;
-  updated: string;
+  /**
+   * Status.io does NOT publish a per-component timestamp. Callers fill this
+   * from `status_overall.updated`, so it is the same value on all 23
+   * components — do not present it as "when this component last changed".
+   */
+  updated?: string;
 }
 
 export interface LiveStatus {

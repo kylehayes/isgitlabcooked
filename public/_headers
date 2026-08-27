@@ -1,0 +1,7 @@
+/data/*
+  Cache-Control: public, max-age=31536000, immutable
+/
+  Cache-Control: public, max-age=300, s-maxage=900
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin

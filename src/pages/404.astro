@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Page not found — Is GitLab Cooked?';
+---
+
+<BaseLayout
+  title={title}
+  description="That page does not exist. GitLab.com, for what it is worth, might still be fine."
+  canonicalPath="/404/"
+  noindex
+>
+  <section class="shell grid min-h-[60vh] place-items-center py-16 text-center">
+    <div class="max-w-lg">
+      <p class="font-mono text-6xl font-black tabular-nums text-accent sm:text-7xl">404</p>
+      <h1 class="mt-4 text-2xl font-bold tracking-tight text-balance text-ink sm:text-3xl">
+        This page is cooked. GitLab.com might be fine.
+      </h1>
+      <p class="mt-3 text-base leading-relaxed text-ink-muted">
+        Nothing lives at this URL. That is on us, not on GitLab’s infrastructure team — check the
+        live verdict and see for yourself.
+      </p>
+      <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+        <a
+          href="/"
+          class="rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-ink hover:bg-accent-hover"
+        >
+          See the live verdict
+        </a>
+        <a
+          href="/about/"
+          class="rounded-lg border-2 border-ink-subtle px-4 py-2.5 text-sm font-semibold text-ink hover:bg-surface-sunken"
+        >
+          About the data
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import type { Aggregates } from '../lib/types';
+import aggregatesJson from '../generated/aggregates.json';
+
+const aggregates = aggregatesJson as Aggregates;
+const nf = new Intl.NumberFormat('en-US');
+
+// Per-year totals for the DEFAULT filter, derived from byMonth so the table
+// can never drift from the rest of the page. The unfiltered tracker total is
+// quoted separately and comes straight from the aggregate.
+const byYear = new Map<string, number>();
+for (const [monthKey, count] of Object.entries(aggregates.byMonth)) {
+  const year = monthKey.slice(0, 4);
+  byYear.set(year, (byYear.get(year) ?? 0) + count);
+}
+const years = [...byYear.entries()].sort(([a], [b]) => a.localeCompare(b));
+const peak = Math.max(...years.map(([, n]) => n));
+const currentYear = years.length ? years[years.length - 1][0] : '';
+
+const sev = aggregates.bySeverityAll;
+const sevLabelled = (sev['1'] ?? 0) + (sev['2'] ?? 0) + (sev['3'] ?? 0) + (sev['4'] ?? 0);
+
+const title = 'About the data — Is GitLab Cooked?';
+const description =
+  'How Is GitLab Cooked? counts GitLab.com incidents: the two public sources, the default severity 1–2 production filter, how service tags are inferred, and why only S1/S2 durations are trustworthy.';
+---
+
+<BaseLayout title={title} description={description} canonicalPath="/about/">
+  <article class="shell py-10 sm:py-14">
+    <header class="max-w-2xl">
+      <p class="text-xs font-semibold tracking-[0.14em] text-ink-subtle uppercase">Methodology</p>
+      <h1 class="mt-2 text-3xl font-extrabold tracking-tight text-balance text-ink sm:text-4xl">
+        Where these numbers come from, and how far to trust them
+      </h1>
+      <p class="mt-4 text-lg leading-relaxed text-ink-muted"> Short version: everything here is public data GitLab publishes about itself. We do not have an inside line, we are not affiliated with GitLab, and several of the more interesting columns are inferences rather than facts. This page says exactly which ones. </p>
+    </header>
+
+    <div class="prose-plain mt-10 max-w-2xl">
+      <h2>The two sources</h2>
+      <p> <strong>1. status.gitlab.com.</strong> GitLab’s official status page, run on Status.io, covering 23 components — the website, the API, Git over SSH and HTTPS, pipelines, the registry, Pages, and so on. That feed decides the live verdict at the top of the home page: whether GitLab.com is cooked <em>right now</em>. When the fetch fails we fall back to a snapshot captured at build time and say so. </p>
+      <p> <strong>2. <a href="https://gitlab.com/gitlab-com/gl-infra/production/-/issues" rel="noopener noreferrer nofollow" target="_blank">gitlab-com/gl-infra/production</a>.</strong> This is the good one. GitLab’s infrastructure team runs its incident process in a public issue tracker, and every incident gets an issue with severity, stage and workflow labels attached. That is <strong>{nf.format(aggregates.totalAll)} incident-labelled issues since 28 April 2018</strong>, which is the entire history this site charts. </p>
+      <p> It is worth pausing on how unusual that is. Most companies at GitLab’s scale publish a sanitised status page and nothing else. GitLab publishes the arguments. A site like this can only exist because they do — so read the numbers as a sign of transparency, not of unusual fragility. </p>
+
+      <h2>What counts as an incident</h2>
+      <p> An issue in that project carrying the <code>incident</code> label. That is GitLab’s own definition, not ours; we do not add, merge or drop anything. Of those, {nf.format(sevLabelled)} carry a <code>severity::N</code> label and {nf.format(sev['0'] ?? 0)} do not. </p>
+
+      <h3>The default filter, and why it hides most of them</h3>
+      <p> By default this site shows <strong>severity 1 and 2 incidents in the <code>gprd</code> production stage</strong> — {nf.format(aggregates.totalDefault)} of the {nf.format(aggregates.totalAll)}. Everything else is one toggle away, but it is not the default, for a reason. </p>
+      <p> A large share of the tracker is internal SLO alerting. An error budget dips, a saturation threshold trips at 3am, an alert opens an issue, an engineer confirms nothing user-visible happened, the issue closes. That is a healthy monitoring system doing its job. Counting each one as a GitLab.com “outage” would inflate the number by roughly seven times and tell you nothing useful. Similarly, <code>gstg</code> (staging) and <code>cny</code> (canary) incidents are, by design, things that broke <em>before</em> reaching you. </p>
+
+      <h3>Service tags are inferred, not published</h3>
+      <p> GitLab does not attach a machine-readable “which service broke” field to incident issues. We infer one by keyword-matching the incident title, then attach a bitmask so a single incident can belong to several services at once. It is directionally correct and useful for spotting patterns — Gitaly has bad months, CI has bad months — but it is <strong>not authoritative</strong>. A title that says “registry” gets tagged registry; a title that says nothing useful lands in “other”. Treat the service filter as a search heuristic, not as GitLab’s own taxonomy. </p>
+
+      <h3>Durations exist for S1 and S2 only</h3>
+      <p> Where we show how long an incident lasted, it is the interval from the issue being opened to the <code>Incident::Mitigated</code> label being applied — a real timestamp from the label event history, which is close to the moment users stopped feeling it. </p>
+      <p> That label is applied reliably for severity 1 and 2 and unreliably below it, so <strong>we publish no duration for S3 and S4 at all</strong>. The tempting substitute, <code>closed_at − created_at</code>, is worthless here: low-severity tickets routinely stay open for hundreds of hours after the outage ended, because closing them is paperwork rather than firefighting. A chart built on that would be measuring ticket hygiene and calling it downtime. So the duration numbers cover a minority of incidents, on purpose. </p>
+
+      <h2>Customer-facing production incidents per year</h2>
+      <p> Severity 1–2, <code>gprd</code> only. {currentYear} is partial — the year is not over. </p>
+
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full min-w-[26rem] border-collapse text-left text-sm">
+          <caption class="sr-only">
+            Severity 1 and 2 production incidents on GitLab.com per calendar year.
+          </caption>
+          <thead>
+            <tr class="border-b border-border-strong">
+              <th scope="col" class="py-2 pr-4 font-semibold text-ink">Year</th>
+              <th scope="col" class="py-2 pr-4 text-right font-semibold text-ink">Incidents</th>
+              <th scope="col" class="py-2 font-semibold text-ink">Relative volume</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              years.map(([year, count]) => (
+                <tr class="border-b border-border last:border-0">
+                  <th scope="row" class="py-2 pr-4 font-mono font-medium tabular-nums text-ink">
+                    {year}
+                    {year === currentYear ? (
+                      <span class="ml-1 font-sans text-xs font-normal text-ink-subtle">
+                        (partial)
+                      </span>
+                    ) : null}
+                  </th>
+                  <td class="py-2 pr-4 text-right font-mono tabular-nums text-ink">
+                    {nf.format(count)}
+                  </td>
+                  <td class="py-2">
+                    <span
+                      class="block h-2.5 rounded-full bg-accent"
+                      style={`width: ${Math.max(2, Math.round((count / peak) * 100))}%`}
+                      aria-hidden="true"
+                    />
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <h2>Things this site does not claim</h2>
+      <ul>
+        <li> <strong>That an incident equals downtime you noticed.</strong> Plenty are mitigated before anyone opens a status page. </li>
+        <li> <strong>That the counts are complete.</strong> They are complete with respect to the public tracker. If an incident was never filed there, it is not here. </li>
+        <li> <strong>That more incidents means worse engineering.</strong> Incident volume tracks traffic, feature surface and alerting sensitivity at least as much as it tracks reliability. The 2021 peak coincides with GitLab.com’s steepest growth, not with its worst engineers. </li>
+        <li> <strong>That GitLab has anything to do with this.</strong> Unofficial, unaffiliated, unendorsed. “GitLab” is a trademark of GitLab Inc. and is used here only to identify what is being measured. </li>
+      </ul>
+
+      <h2>How often it updates</h2>
+      <p> The live verdict is fetched from the status page in your browser, so it is as fresh as Status.io is. The incident history is rebuilt on a schedule and inlined into the page, so the counters move when the site rebuilds, not continuously. The footer shows the exact build timestamp. </p>
+
+      <h2>Analytics</h2>
+      <p> Google Analytics 4, with IP anonymisation on, recording page views and a short list of interaction events (which filter you changed, which day you opened). No accounts, no logins, no personal data, nothing sold. If you block it, the site works identically. </p>
+
+      <h2>Corrections</h2>
+      <p> If a number here looks wrong, it probably is, and the source is one click away. Both sources are linked from every page — go and check, then tell us. </p>
+    </div>
+  </article>
+</BaseLayout>

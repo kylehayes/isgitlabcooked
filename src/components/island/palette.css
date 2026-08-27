@@ -1,0 +1,158 @@
+/* ---------------------------------------------------------------------------
+ * Island colour tokens — Track C.
+ *
+ * Track B reserved the `--color-sev-*` and `--color-heat-*` namespaces for this
+ * file; everything here stays inside them. Charts and legends both read these
+ * variables, so a swatch can never drift from the cell it describes.
+ *
+ * Three ramps, three jobs. Every one of them was produced by solving in OKLCH
+ * and then verified with the data-viz skill's `validate_palette.js --ordinal`
+ * against the two surfaces Track B actually paints on (#ffffff light,
+ * oklch(21.5% .021 265) == #151923 dark). Results are recorded per ramp below.
+ *
+ * Why ordinal and not categorical: severity is ranked (S1 is worse than S2), so
+ * the reader must see the order in the colour. That rules out a categorical hue
+ * set, and it is also why neither ramp leans on hue to carry meaning — the
+ * signal is lightness, which survives protanopia, deuteranopia, greyscale
+ * printing and forced-colors. No red/green opposition anywhere.
+ * ------------------------------------------------------------------------- */
+
+@theme static {
+  /* -- Severity fill: one hue (ember, 20 deg spread), monotone lightness. -----
+   * validate_palette.js --ordinal --mode light --surface #ffffff
+   *   monotone PASS · adjacent dL PASS · light-end 2.64:1 PASS · single hue 20deg PASS
+   * Severity rises => darker on light. The anchor flips in dark (below), where
+   * severity rising => lighter, because "further from the surface" is the
+   * invariant, not "darker".
+   * `unknown` is deliberately chromaless: 157 issues carry no severity label and
+   * must not impersonate a rank. `none` is the empty-cell wash. */
+  --color-sev-none: oklch(96.2% 0.008 250);
+  --color-sev-unknown: #b9bec9;
+  --color-sev-4: #f37f51;
+  --color-sev-3: #de5739;
+  --color-sev-2: #c42a28;
+  --color-sev-1: #9f0021;
+
+  /* -- Sequential magnitude buckets (downtime minutes, incident counts). ------
+   * The documented blue ramp, steps 250..650. Cool vs warm is load-bearing:
+   * warm always means severity, cool always means volume, so the two heatmaps
+   * are never confused for each other.
+   * validate_palette.js --ordinal --mode light --surface #ffffff
+   *   monotone PASS · adjacent dL PASS · light-end 2.11:1 PASS · single hue 3deg PASS
+   * q0 is the zero bucket and is allowed to recede into the surface; q1 is the
+   * lowest *real* bucket and clears the 2:1 ordinal floor. */
+  --color-heat-q0: oklch(96.2% 0.008 250);
+  --color-heat-q1: #86b6ef;
+  --color-heat-q2: #5598e7;
+  --color-heat-q3: #2a78d6;
+  --color-heat-q4: #1c5cab;
+  --color-heat-q5: #104281;
+
+  /* -- Verdict heat 0..5, indexed by `Verdict.heat`. --------------------------
+   * These are INK, not fills: the verdict word is set in them at display size,
+   * so each is solved to >= 4.5:1 on the light surface (>= 7:1 on dark). They
+   * are a status scale, not a series scale, and never appear without the word
+   * ("Raw", "Cooked", ...) beside them. */
+  --color-heat-0: #14874e;
+  --color-heat-1: #8d7324;
+  --color-heat-2: #b16200;
+  --color-heat-3: #cd4c13;
+  --color-heat-4: #d73f39;
+  --color-heat-5: #a3122c;
+
+  /* Tinted plate behind the verdict word. */
+  --color-heat-soft-0: oklch(95% 0.045 155);
+  --color-heat-soft-1: oklch(95.5% 0.045 95);
+  --color-heat-soft-2: oklch(95.5% 0.05 70);
+  --color-heat-soft-3: oklch(95.5% 0.045 45);
+  --color-heat-soft-4: oklch(95.5% 0.04 27);
+  --color-heat-soft-5: oklch(94% 0.045 15);
+
+  /* Grid chrome. Kept here so the cell gap is one number in one place. */
+  --color-sev-cell-ring: oklch(0% 0 0 / 0.10);
+}
+
+/* --- Dark theme ------------------------------------------------------------
+ * Selected, not flipped. Every value re-solved for the dark surface and
+ * re-validated:
+ *   severity  --ordinal --mode dark --surface #151923
+ *     monotone PASS · adjacent dL PASS · nearest-surface 4.19:1 PASS · hue 13deg PASS
+ *   sequential --ordinal --mode dark --surface #151923
+ *     monotone PASS · adjacent dL PASS · nearest-surface 2.65:1 PASS · hue 3deg PASS
+ * ------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-sev-none: oklch(26% 0.02 265);
+    --color-sev-unknown: #4b5364;
+    --color-sev-4: #c35f36;
+    --color-sev-3: #e6674a;
+    --color-sev-2: #ff7c69;
+    --color-sev-1: #ffa194;
+
+    --color-heat-q0: oklch(26% 0.02 265);
+    --color-heat-q1: #1c5cab;
+    --color-heat-q2: #2a78d6;
+    --color-heat-q3: #5598e7;
+    --color-heat-q4: #86b6ef;
+    --color-heat-q5: #b7d3f6;
+
+    --color-heat-0: #52b87c;
+    --color-heat-1: #bda257;
+    --color-heat-2: #ed8d2d;
+    --color-heat-3: #ff7f51;
+    --color-heat-4: #ff7c70;
+    --color-heat-5: #ff8fa0;
+
+    --color-heat-soft-0: oklch(28% 0.05 155);
+    --color-heat-soft-1: oklch(29% 0.05 95);
+    --color-heat-soft-2: oklch(29% 0.055 70);
+    --color-heat-soft-3: oklch(29% 0.06 45);
+    --color-heat-soft-4: oklch(29% 0.07 27);
+    --color-heat-soft-5: oklch(29% 0.07 12);
+
+    --color-sev-cell-ring: oklch(100% 0 0 / 0.10);
+  }
+}
+
+[data-theme="dark"] {
+  --color-sev-none: oklch(26% 0.02 265);
+  --color-sev-unknown: #4b5364;
+  --color-sev-4: #c35f36;
+  --color-sev-3: #e6674a;
+  --color-sev-2: #ff7c69;
+  --color-sev-1: #ffa194;
+
+  --color-heat-q0: oklch(26% 0.02 265);
+  --color-heat-q1: #1c5cab;
+  --color-heat-q2: #2a78d6;
+  --color-heat-q3: #5598e7;
+  --color-heat-q4: #86b6ef;
+  --color-heat-q5: #b7d3f6;
+
+  --color-heat-0: #52b87c;
+  --color-heat-1: #bda257;
+  --color-heat-2: #ed8d2d;
+  --color-heat-3: #ff7f51;
+  --color-heat-4: #ff7c70;
+  --color-heat-5: #ff8fa0;
+
+  --color-heat-soft-0: oklch(28% 0.05 155);
+  --color-heat-soft-1: oklch(29% 0.05 95);
+  --color-heat-soft-2: oklch(29% 0.055 70);
+  --color-heat-soft-3: oklch(29% 0.06 45);
+  --color-heat-soft-4: oklch(29% 0.07 27);
+  --color-heat-soft-5: oklch(29% 0.07 12);
+
+  --color-sev-cell-ring: oklch(100% 0 0 / 0.10);
+}
+
+/* Forced-colors / print: hue and lightness are both gone, so the hatch that
+ * normally only marks "ongoing" becomes the fallback channel and the hidden
+ * table is the real answer. Keep cell borders so the grid stays legible. */
+@media (forced-colors: active) {
+  .igc-cell {
+    forced-color-adjust: none;
+    stroke: CanvasText;
+    stroke-width: 0.5px;
+  }
+}

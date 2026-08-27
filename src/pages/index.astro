@@ -1,5 +1,47 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import StatCards from '../components/StatCards.astro';
+import Explainer from '../components/Explainer.astro';
+
+// The interactive island (Track C). Both components take their build artifacts
+// as props so Astro inlines them into the HTML — no extra round-trip for the
+// verdict, one content-hashed fetch for the 7,000-row dataset.
+import Dashboard from '../components/island/Dashboard';
+import LiveVerdict from '../components/island/LiveVerdict';
+
+import type { DataManifest, StatusSnapshot } from '../lib/types';
+import manifestJson from '../generated/manifest.json';
+import snapshotJson from '../generated/snapshot.json';
+
+const manifest = manifestJson as DataManifest;
+const snapshot = snapshotJson as unknown as StatusSnapshot;
 ---
-<html lang="en"><head><meta charset="utf-8" /><title>Is GitLab Cooked?</title></head>
-<body><h1 class="text-2xl font-bold">scaffold ok</h1></body></html>
+
+<BaseLayout structuredData canonicalPath="/">
+  {/* Hero server-renders the verdict word; LiveVerdict takes over the named
+      slot on hydrate and keeps polling status.gitlab.com. */}
+  <Hero>
+    <LiveVerdict client:load slot="verdict" snapshot={snapshot} />
+  </Hero>
+
+  <StatCards />
+
+  <section class="shell pb-4" aria-labelledby="dashboard-heading">
+    <div class="mb-4">
+      <h2 id="dashboard-heading" class="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+        Every incident since 2018
+      </h2>
+      <p class="mt-1.5 max-w-2xl text-sm text-ink-muted">
+        One square per day. Filter by severity, stage and inferred service; open a day to see the
+        individual issues and jump straight to them on GitLab.
+      </p>
+    </div>
+
+    <div class="dashboard-slot">
+      <Dashboard client:load manifest={manifest} />
+    </div>
+  </section>
+
+  <Explainer />
+</BaseLayout>

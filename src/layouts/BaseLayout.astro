@@ -1,0 +1,192 @@
+---
+import '../styles/global.css';
+import Analytics from '../components/Analytics.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  /** Full <title>. Defaults to the site title. */
+  title?: string;
+  description?: string;
+  /** Absolute path for <link rel="canonical">. Defaults to the current URL. */
+  canonicalPath?: string;
+  /** Set on /404 so search engines do not index it. */
+  noindex?: boolean;
+  /** Emit the WebSite + Dataset structured data. Home page only. */
+  structuredData?: boolean;
+}
+
+const SITE_URL = 'https://isgitlabcooked.com';
+const DEFAULT_TITLE = 'Is GitLab Cooked? — Live GitLab.com outage & incident tracker';
+const DEFAULT_DESCRIPTION =
+  'Is GitLab.com down right now? A live verdict from status.gitlab.com plus 7,000+ incidents since 2018, pulled from GitLab’s own public infrastructure tracker. Unofficial.';
+
+const {
+  title = DEFAULT_TITLE,
+  description = DEFAULT_DESCRIPTION,
+  canonicalPath,
+  noindex = false,
+  structuredData = false,
+} = Astro.props;
+
+const path = canonicalPath ?? Astro.url.pathname;
+// Normalise: keep exactly one trailing slash so the canonical never forks.
+const canonical = new URL(path.endsWith('/') ? path : `${path}/`, SITE_URL).href;
+const ogImage = new URL('/og.png', SITE_URL).href;
+
+const SOURCE_STATUS = 'https://status.gitlab.com/';
+const SOURCE_TRACKER = 'https://gitlab.com/gitlab-com/gl-infra/production/-/issues';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: `${SITE_URL}/`,
+      name: 'Is GitLab Cooked?',
+      alternateName: 'isgitlabcooked.com',
+      description: DEFAULT_DESCRIPTION,
+      inLanguage: 'en',
+    },
+    {
+      '@type': 'Dataset',
+      '@id': `${SITE_URL}/#dataset`,
+      name: 'GitLab.com incident history, 2018–present',
+      description:
+        'Incident-labelled issues from GitLab’s public infrastructure tracker, combined with a live capture of the status.gitlab.com component states. Service tags are inferred from incident titles and are not published by GitLab. Durations exist only for severity 1 and 2 incidents and are derived from the Incident::Mitigated label event.',
+      url: `${SITE_URL}/`,
+      isAccessibleForFree: true,
+      temporalCoverage: '2018-04-28/..',
+      isBasedOn: [SOURCE_STATUS, SOURCE_TRACKER],
+      creator: { '@type': 'Organization', name: 'Is GitLab Cooked?', url: `${SITE_URL}/` },
+      keywords: [
+        'GitLab',
+        'GitLab.com',
+        'outage',
+        'incident',
+        'downtime',
+        'status page',
+        'site reliability',
+      ],
+      variableMeasured: [
+        { '@type': 'PropertyValue', name: 'Incident count', description: 'Incident-labelled issues per day, month and year.' },
+        { '@type': 'PropertyValue', name: 'Severity', description: 'GitLab severity::1 through severity::4 labels.' },
+        { '@type': 'PropertyValue', name: 'Time to mitigation', description: 'Minutes from issue creation to the Incident::Mitigated label. Severity 1 and 2 only.' },
+      ],
+    },
+  ],
+};
+
+// JSON-LD is our own data, but escape `<` regardless so the payload can never
+// terminate the script element.
+const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/about/', label: 'About the data' },
+];
+const currentPath = path.endsWith('/') ? path : `${path}/`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta name="theme-color" content="#f7f8fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16191f" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Is GitLab Cooked?" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Is GitLab Cooked? — the current verdict on GitLab.com's reliability." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {structuredData && <script type="application/ld+json" is:inline set:html={jsonLdText} />}
+
+    <Analytics />
+  </head>
+
+  <body class="min-h-dvh flex flex-col">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="border-b border-border bg-surface/80 backdrop-blur-sm sticky top-0 z-30">
+      <div class="shell flex items-center justify-between gap-4 py-3">
+        <a
+          href="/"
+          class="flex items-center gap-2 font-bold tracking-tight text-ink hover:text-accent"
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            class="shrink-0"
+            fill="none"
+          >
+            <path
+              d="M16 4c2.2 2.6 1.2 4.4.2 6.2-1 1.9-1.7 3.6.6 5.6-.3-2.4 1-3.6 2.2-4.8 1.6 2.3 2.6 4.3 2.6 6.6a5.6 5.6 0 0 1-11.2 0c0-3.1 2-5.4 3.4-7.4C15.4 8 16.4 6.2 16 4Z"
+              fill="currentColor"
+              class="text-accent"
+            ></path>
+            <path
+              d="M6 21h20v1.5A5.5 5.5 0 0 1 20.5 28h-9A5.5 5.5 0 0 1 6 22.5V21Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span>Is GitLab Cooked?</span>
+        </a>
+
+        <nav aria-label="Primary" class="flex items-center gap-1 text-sm">
+          {
+            navLinks.map((link) => (
+              <a
+                href={link.href}
+                aria-current={currentPath === link.href ? 'page' : undefined}
+                class="rounded-md px-2.5 py-1.5 font-medium text-ink-muted hover:bg-surface-sunken hover:text-ink aria-[current=page]:bg-surface-sunken aria-[current=page]:text-ink aria-[current=page]:underline aria-[current=page]:decoration-accent aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4"
+              >
+                {link.label}
+              </a>
+            ))
+          }
+          <a
+            href={SOURCE_STATUS}
+            rel="noopener noreferrer nofollow"
+            target="_blank"
+            class="hidden rounded-md px-2.5 py-1.5 font-medium text-ink-muted hover:bg-surface-sunken hover:text-ink sm:inline"
+          >
+            status.gitlab.com<span aria-hidden="true"> ↗</span>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

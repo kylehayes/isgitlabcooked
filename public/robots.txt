@@ -1,0 +1,5 @@
+# isgitlabcooked.com — unofficial GitLab.com incident tracker.
+User-agent: *
+Allow: /
+
+Sitemap: https://isgitlabcooked.com/sitemap-index.xml

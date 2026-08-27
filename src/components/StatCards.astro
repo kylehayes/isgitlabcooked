@@ -1,0 +1,72 @@
+---
+/**
+ * The four headline numbers, straight out of src/generated/aggregates.json.
+ *
+ * Every figure here is computed for the DEFAULT filter — severity 1–2, `gprd`
+ * stage — i.e. the incidents a paying customer could plausibly have noticed.
+ * The unfiltered tracker total is shown as a footnote on the first card so the
+ * two numbers are never confused for each other.
+ */
+import type { Aggregates } from '../lib/types';
+import aggregatesJson from '../generated/aggregates.json';
+
+const aggregates = aggregatesJson as Aggregates;
+
+const nf = new Intl.NumberFormat('en-US');
+const monthFmt = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+const dayFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+const fmtMonth = (key: string) => monthFmt.format(new Date(`${key}-01T00:00:00Z`));
+const fmtDay = (iso: string) => dayFmt.format(new Date(`${iso}T00:00:00Z`));
+
+const firstIncidentLabel = fmtDay(aggregates.firstIncident);
+const streak = aggregates.longestStreak;
+
+const cards = [
+  {
+    label: 'Customer-facing incidents',
+    value: nf.format(aggregates.totalDefault),
+    unit: 'since ' + firstIncidentLabel,
+    note: `Severity 1–2 in production. The tracker holds ${nf.format(aggregates.totalAll)} incident-labelled issues in total, most of them internal alerts.`,
+  },
+  {
+    label: 'Recent pace',
+    value: aggregates.avgPerMonthLast3.toFixed(1),
+    unit: 'per month, last 3 months',
+    note: 'A rolling average, so a single loud month does not distort it.',
+  },
+  {
+    label: 'Longest quiet streak',
+    value: nf.format(streak.days),
+    unit: streak.days === 1 ? 'day without one' : 'days without one',
+    note: `${fmtDay(streak.start)} → ${fmtDay(streak.end)}. The current streak is ${nf.format(aggregates.currentStreak.days)} ${aggregates.currentStreak.days === 1 ? 'day' : 'days'}.`,
+  },
+  {
+    label: 'Worst month on record',
+    value: nf.format(aggregates.worstMonth.count),
+    unit: 'incidents in ' + fmtMonth(aggregates.worstMonth.month),
+    note: 'Peak of the 2021 growth era, when GitLab.com was scaling faster than it was stabilising.',
+  },
+];
+---
+
+<section class="shell py-8 sm:py-10" aria-labelledby="stats-heading">
+  <h2 id="stats-heading" class="sr-only">Headline numbers</h2>
+
+  <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" role="list">
+    {
+      cards.map((card) => (
+        <li class="card flex flex-col gap-1.5 p-5">
+          <h3 class="min-h-[2.25rem] text-xs font-semibold tracking-[0.1em] text-ink-subtle uppercase">
+            {card.label}
+          </h3>
+          <p class="text-4xl leading-none font-bold tracking-tight tabular-nums text-ink">
+            {card.value}
+          </p>
+          <p class="text-sm font-medium text-ink">{card.unit}</p>
+          <p class="mt-auto pt-2 text-xs leading-relaxed text-ink-muted">{card.note}</p>
+        </li>
+      ))
+    }
+  </ul>
+</section>

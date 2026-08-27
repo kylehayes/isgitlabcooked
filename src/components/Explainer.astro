@@ -1,0 +1,96 @@
+---
+/**
+ * The honesty section. Everything on this page is an inference from public
+ * data, and this is where we say so in plain language. Keep the tone light,
+ * keep the claims narrow.
+ */
+import type { Aggregates } from '../lib/types';
+import aggregatesJson from '../generated/aggregates.json';
+
+const aggregates = aggregatesJson as Aggregates;
+const nf = new Intl.NumberFormat('en-US');
+const sev = aggregates.bySeverityAll;
+
+const severityRows = [
+  { key: '1', label: 'Severity 1', blurb: 'Broad outage or data loss. The pager goes off.', count: sev['1'] ?? 0 },
+  { key: '2', label: 'Severity 2', blurb: 'Major feature down or badly degraded for many users.', count: sev['2'] ?? 0 },
+  { key: '3', label: 'Severity 3', blurb: 'Narrow impact, or an SLO alert that never reached a user.', count: sev['3'] ?? 0 },
+  { key: '4', label: 'Severity 4', blurb: 'Cosmetic, internal, or filed for the paperwork.', count: sev['4'] ?? 0 },
+  { key: '0', label: 'Unlabelled', blurb: 'No severity label was ever applied.', count: sev['0'] ?? 0 },
+];
+
+const totalAll = aggregates.totalAll;
+const defaultShare = Math.round((aggregates.totalDefault / totalAll) * 1000) / 10;
+---
+
+<section class="shell py-10 sm:py-14" aria-labelledby="explainer-heading">
+  <div class="card p-6 sm:p-9">
+    <h2 id="explainer-heading" class="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+      What you are actually looking at
+    </h2>
+
+    <div class="prose-plain mt-4 grid gap-8 lg:grid-cols-3 lg:gap-10">
+      <div>
+        <h3>Where the numbers come from</h3>
+        <p> Two public sources, no scraping of anything private. The live verdict is the component state on <a href="https://status.gitlab.com/" rel="noopener noreferrer nofollow" target="_blank">status.gitlab.com</a>, GitLab’s official Status.io page, across its 23 components. The history is every incident-labelled issue in <a href="https://gitlab.com/gitlab-com/gl-infra/production/-/issues" rel="noopener noreferrer nofollow" target="_blank">gitlab-com/gl-infra/production</a>, the tracker GitLab’s own infrastructure team works out of in the open — <strong>{nf.format(totalAll)} of them since 28 April 2018</strong>. </p>
+        <p> Credit where it is due: very few companies at this size run their incident process in a public issue tracker. This site only exists because GitLab shows its work. </p>
+      </div>
+
+      <div>
+        <h3>Why the default view hides most of it</h3>
+        <p> A large share of those {nf.format(totalAll)} issues are internal SLO alerts — an error budget dipped, a saturation threshold tripped, somebody filed a ticket, nobody outside the company ever noticed. Counting those as “outages” would be dishonest. </p>
+        <p> So the default view is <strong>severity 1 and 2 in the <code>gprd</code> production stage only</strong>: {nf.format(aggregates.totalDefault)} incidents, about {defaultShare}% of the tracker. Flip the toggle to pull in S3, S4, staging and canary if you want the full firehose. </p>
+      </div>
+
+      <div>
+        <h3>What this does <em>not</em> mean</h3>
+        <ul>
+          <li> <strong>Service tags are guesses.</strong> GitLab does not publish a per-incident service field, so we infer one by keyword-matching incident titles. Directionally right, occasionally wrong, never authoritative. </li>
+          <li> <strong>Durations only exist for S1 and S2.</strong> They come from the timestamp on the <code>Incident::Mitigated</code> label. S3 and S4 have no trustworthy duration: their tickets are routinely closed hundreds of hours after the outage actually ended, so “time to close” measures ticket hygiene, not downtime. </li>
+          <li> <strong>An incident is not automatically downtime.</strong> Plenty resolve before anyone reaches for a status page. </li>
+          <li> <strong>This is unofficial.</strong> Not affiliated with, endorsed by, or checked by GitLab Inc. </li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="mt-10 text-lg font-semibold text-ink">The severity split, unfiltered</h3>
+    <p class="mt-1 text-sm text-ink-muted"> Every incident-labelled issue in the tracker, by the <code class="rounded border border-border bg-surface-sunken px-1 py-0.5 font-mono text-xs">severity::N</code> label it carries. </p>
+
+    <div class="mt-4 overflow-x-auto">
+      <table class="w-full min-w-[34rem] border-collapse text-left text-sm">
+        <caption class="sr-only">
+          Count of incident-labelled issues in gitlab-com/gl-infra/production by severity label,
+          April 2018 to date.
+        </caption>
+        <thead>
+          <tr class="border-b border-border-strong">
+            <th scope="col" class="py-2 pr-4 font-semibold text-ink">Severity</th>
+            <th scope="col" class="py-2 pr-4 font-semibold text-ink">What it means</th>
+            <th scope="col" class="py-2 pr-4 text-right font-semibold text-ink">Issues</th>
+            <th scope="col" class="py-2 text-right font-semibold text-ink">Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            severityRows.map((row) => (
+              <tr class="border-b border-border last:border-0">
+                <th scope="row" class="py-2.5 pr-4 font-medium whitespace-nowrap text-ink">
+                  {row.label}
+                </th>
+                <td class="py-2.5 pr-4 text-ink-muted">{row.blurb}</td>
+                <td class="py-2.5 pr-4 text-right font-mono tabular-nums text-ink">
+                  {nf.format(row.count)}
+                </td>
+                <td class="py-2.5 text-right font-mono tabular-nums text-ink-muted">
+                  {((row.count / totalAll) * 100).toFixed(1)}%
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="mt-6 text-sm text-ink-muted"> Want the long version, including how the keyword classifier works and where it falls over?{' '} <a href="/about/" class="font-medium text-accent underline underline-offset-2 hover:text-accent-hover" >Read the full methodology →</a> </p>
+  </div>
+</section>

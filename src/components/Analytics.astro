@@ -1,0 +1,60 @@
+---
+/**
+ * GA4. Rendered exactly once, from BaseLayout.
+ *
+ * SECURITY NOTE — do not "simplify" this back into `define:vars`.
+ * Astro's `define:vars` shipped an XSS hole (GHSA-j687-52p2-xcff) because its
+ * serialiser did not fully neutralise a `</script>` sequence inside an
+ * interpolated string. We are on a patched Astro, but the mitigation here is
+ * structural rather than version-dependent:
+ *
+ *   1. The measurement ID is validated against /^G-[A-Z0-9]+$/ before it is
+ *      allowed anywhere near an inline script. Anything else is dropped and
+ *      no tag is emitted at all.
+ *   2. Every interpolation goes through JSON.stringify, never bare
+ *      concatenation.
+ *
+ * Together those mean the inline script body is drawn from a character set
+ * that cannot terminate the script element, whatever the environment says.
+ */
+import { PUBLIC_GA4_ID } from 'astro:env/client';
+
+const GA4_ID_PATTERN = /^G-[A-Z0-9]+$/;
+
+const rawId = PUBLIC_GA4_ID?.trim() ?? '';
+const measurementId = GA4_ID_PATTERN.test(rawId) ? rawId : null;
+
+if (rawId && !measurementId) {
+  console.warn(
+    `[analytics] PUBLIC_GA4_ID does not match ${GA4_ID_PATTERN}; refusing to emit the gtag snippet.`,
+  );
+}
+
+// Safe by construction: measurementId is [A-Z0-9-] only.
+const loaderSrc = measurementId
+  ? `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`
+  : null;
+
+const bootstrap = measurementId
+  ? [
+      'window.dataLayer = window.dataLayer || [];',
+      'function gtag(){dataLayer.push(arguments);}',
+      'window.gtag = gtag;',
+      "gtag('js', new Date());",
+      `gtag('config', ${JSON.stringify(measurementId)}, ${JSON.stringify({
+        anonymize_ip: true,
+        send_page_view: true,
+      })});`,
+    ].join('\n')
+  : null;
+---
+
+{
+  measurementId && (
+    <>
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+      <script is:inline async src={loaderSrc}></script>
+      <script is:inline set:html={bootstrap} />
+    </>
+  )
+}

@@ -1,1 +1,308 @@
 @import "tailwindcss";
+
+/* Track C's severity / heat ramp. It lives in the island directory because
+ * Track C owns it, but it has to be imported HERE: a bare `@theme` block in a
+ * CSS file pulled in from a .tsx never reaches Tailwind's theme pass, so the
+ * --color-heat-* / --color-sev-* variables silently resolve to nothing and
+ * every heatmap cell renders black. Importing it from the Tailwind entrypoint
+ * merges the tokens into the same theme as everything below. */
+@import "../components/island/palette.css";
+
+/* ---------------------------------------------------------------------------
+ * Design tokens — Track B (shell, layout, typography, surfaces).
+ *
+ * OWNERSHIP: Track C owns the severity / heat ramp. Tokens named
+ *   --color-heat-*  and  --color-sev-*
+ * are DELIBERATELY not defined here. Add them in the island's own stylesheet.
+ * Everything below is layout/surface/text chrome and is safe to build on.
+ *
+ * Theming works by variable swap, not by `dark:` utilities: `bg-surface`
+ * resolves to `var(--color-surface)`, and the media query / [data-theme]
+ * blocks further down rewrite that variable. Any component using the semantic
+ * tokens is automatically correct in both themes.
+ * ------------------------------------------------------------------------- */
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Apple Color Emoji", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
+
+  /* Display scale for the hero verdict. Two steps, because the verdict words
+   * run from "Raw" (3 chars) to "Room Temperature" (16); one size cannot
+   * serve both without either whispering or wrapping. Hero.astro picks. */
+  --text-verdict: clamp(3rem, 11vw, 7rem);
+  --text-verdict--line-height: 0.95;
+  --text-verdict--letter-spacing: -0.045em;
+  --text-verdict-long: clamp(2.25rem, 7.5vw, 4.5rem);
+  --text-verdict-long--line-height: 1;
+  --text-verdict-long--letter-spacing: -0.035em;
+  --text-headline: clamp(1.75rem, 5.5vw, 3rem);
+  --text-headline--line-height: 1.05;
+  --text-headline--letter-spacing: -0.03em;
+
+  /* Reserved heights, so hydrating the island cannot shift the page. */
+  --size-verdict-slot: 11.5rem;
+  --size-dashboard-slot: 34rem;
+
+  /* Surfaces — light theme is the base; the swaps are below. */
+  --color-canvas: oklch(98.6% 0.005 250);
+  --color-surface: oklch(100% 0 0);
+  --color-surface-raised: oklch(99.2% 0.004 250);
+  --color-surface-sunken: oklch(96.2% 0.008 250);
+  --color-border: oklch(90% 0.012 255);
+  --color-border-strong: oklch(80% 0.02 255);
+
+  /* Text */
+  --color-ink: oklch(21% 0.03 260);
+  --color-ink-muted: oklch(46% 0.02 260);
+  --color-ink-subtle: oklch(53% 0.017 260);
+  --color-ink-inverse: oklch(98% 0.005 250);
+
+  /* Brand / interaction. GitLab-adjacent orange, darkened for AA on white. */
+  --color-accent: oklch(55% 0.185 42);
+  --color-accent-hover: oklch(48% 0.175 40);
+  --color-accent-ink: oklch(100% 0 0);
+  --color-accent-soft: oklch(95.5% 0.035 55);
+  --color-focus: oklch(58% 0.19 255);
+
+  /* Binary service state. NOT the severity ramp — that is Track C's.
+   * Never used as the only signal: every use is paired with text or an icon. */
+  --color-ok: oklch(48% 0.13 155);
+  --color-ok-soft: oklch(95% 0.045 155);
+  --color-alarm: oklch(52% 0.2 27);
+  --color-alarm-soft: oklch(95.5% 0.04 27);
+
+  --radius-card: 0.875rem;
+  --shadow-card: 0 1px 2px oklch(20% 0.03 260 / 0.06),
+    0 8px 24px -12px oklch(20% 0.03 260 / 0.14);
+}
+
+/* `dark:` utilities honour both the OS preference and an explicit
+ * data-theme override, so a future toggle needs no CSS changes. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme="light"]):not([data-theme="light"] *)) {
+      @slot;
+    }
+  }
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+}
+
+/* --- Dark theme -----------------------------------------------------------
+ * WCAG contrast, measured against all three backgrounds this site paints on
+ * (canvas, surface, surface-sunken). Worst case per token:
+ *
+ *              light   dark
+ *   ink        15.9    15.9      AAA
+ *   ink-muted   6.4     8.5      AA  (AAA on most surfaces)
+ *   ink-subtle  4.7     5.6      AA  — smallest text on the site is 12px
+ *   accent      4.7     7.3      AA  as link text; the hero word is display size
+ *   ok / alarm  5.4     6.6      AA
+ *   focus ring  4.2     9.0      well past the 3:1 non-text minimum
+ *
+ * Nothing on the page is distinguished by colour alone: the verdict ships a
+ * "Short answer: Yes/No." line, degraded components are named, and the
+ * severity table carries counts as well as labels.
+ * ------------------------------------------------------------------------ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-canvas: oklch(17.5% 0.018 265);
+    --color-surface: oklch(21.5% 0.021 265);
+    --color-surface-raised: oklch(25% 0.023 265);
+    --color-surface-sunken: oklch(15% 0.016 265);
+    --color-border: oklch(31% 0.024 265);
+    --color-border-strong: oklch(42% 0.03 265);
+
+    --color-ink: oklch(96.5% 0.006 250);
+    --color-ink-muted: oklch(77% 0.014 255);
+    --color-ink-subtle: oklch(66% 0.016 255);
+    --color-ink-inverse: oklch(18% 0.02 265);
+
+    --color-accent: oklch(74% 0.16 55);
+    --color-accent-hover: oklch(81% 0.15 60);
+    --color-accent-ink: oklch(17% 0.02 265);
+    --color-accent-soft: oklch(30% 0.06 45);
+    --color-focus: oklch(76% 0.13 240);
+
+    --color-ok: oklch(78% 0.15 155);
+    --color-ok-soft: oklch(28% 0.05 155);
+    --color-alarm: oklch(72% 0.17 27);
+    --color-alarm-soft: oklch(29% 0.07 27);
+
+    --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.4), 0 10px 30px -14px oklch(0% 0 0 / 0.6);
+  }
+}
+
+/* Explicit override wins over the media query in both directions. */
+[data-theme="dark"] {
+  --color-canvas: oklch(17.5% 0.018 265);
+  --color-surface: oklch(21.5% 0.021 265);
+  --color-surface-raised: oklch(25% 0.023 265);
+  --color-surface-sunken: oklch(15% 0.016 265);
+  --color-border: oklch(31% 0.024 265);
+  --color-border-strong: oklch(42% 0.03 265);
+  --color-ink: oklch(96.5% 0.006 250);
+  --color-ink-muted: oklch(77% 0.014 255);
+  --color-ink-subtle: oklch(66% 0.016 255);
+  --color-ink-inverse: oklch(18% 0.02 265);
+  --color-accent: oklch(74% 0.16 55);
+  --color-accent-hover: oklch(81% 0.15 60);
+  --color-accent-ink: oklch(17% 0.02 265);
+  --color-accent-soft: oklch(30% 0.06 45);
+  --color-focus: oklch(76% 0.13 240);
+  --color-ok: oklch(78% 0.15 155);
+  --color-ok-soft: oklch(28% 0.05 155);
+  --color-alarm: oklch(72% 0.17 27);
+  --color-alarm-soft: oklch(29% 0.07 27);
+  --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.4), 0 10px 30px -14px oklch(0% 0 0 / 0.6);
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One visible focus style everywhere, including inside the island. */
+  :where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+}
+
+@utility skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: -3.5rem;
+  z-index: 50;
+  border-radius: 0.5rem;
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  padding: 0.6rem 1rem;
+  font-weight: 600;
+  transition: top 120ms ease;
+
+  &:focus {
+    top: 0.75rem;
+  }
+}
+
+/* Layout shells shared by every page. */
+@utility shell {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Reserved boxes. The server-rendered content and the hydrated island must
+ * both live inside these so nothing reflows on hydration. */
+@utility verdict-slot {
+  min-block-size: var(--size-verdict-slot);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@utility dashboard-slot {
+  min-block-size: var(--size-dashboard-slot);
+  container-type: inline-size;
+}
+
+/* Long-form copy on the about page and in the explainer. */
+@utility prose-plain {
+  & p,
+  & li {
+    color: var(--color-ink-muted);
+    line-height: 1.7;
+  }
+  & h2 {
+    color: var(--color-ink);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-block-start: 2.5rem;
+    margin-block-end: 0.75rem;
+  }
+  & h3 {
+    color: var(--color-ink);
+    font-size: 1.125rem;
+    font-weight: 650;
+    margin-block-start: 1.75rem;
+    margin-block-end: 0.5rem;
+  }
+  & p + p {
+    margin-block-start: 1rem;
+  }
+  & ul {
+    margin-block: 1rem;
+    padding-inline-start: 1.25rem;
+    list-style: disc;
+  }
+  & li + li {
+    margin-block-start: 0.5rem;
+  }
+  & a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & a:hover {
+    color: var(--color-accent-hover);
+  }
+  & strong {
+    color: var(--color-ink);
+    font-weight: 650;
+  }
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface-sunken);
+    border: 1px solid var(--color-border);
+    border-radius: 0.35rem;
+    padding: 0.1em 0.35em;
+  }
+}

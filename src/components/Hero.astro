@@ -1,0 +1,182 @@
+---
+/**
+ * Hero. Server-rendered so crawlers, RSS readers and link unfurls get a real
+ * verdict word instead of an empty div.
+ *
+ * ===== HYDRATION CONTRACT FOR TRACK C ======================================
+ * Two equivalent ways in; pick one, don't do both.
+ *
+ * (a) Named slot — preferred, and what index.astro now does:
+ *
+ *       <Hero>
+ *         <LiveVerdict client:load slot="verdict" snapshot={snapshot} />
+ *       </Hero>
+ *
+ *     Astro drops the server-rendered fallback below and renders the island in
+ *     its place (still SSR'd, so the crawler text stays real). When the slot is
+ *     filled we also suppress the fallback's disagreement banner, because
+ *     LiveVerdict renders its own.
+ *
+ * (b) Hydrate over it. The fallback markup is wrapped in a stable element:
+ *
+ *       #verdict-mount
+ *         data-verdict-key   VerdictKey     e.g. "room-temperature"
+ *         data-heat          0..5
+ *         data-disagreement  "true" | "false"
+ *         data-source        "snapshot"     (change to "live" once you refetch)
+ *         data-captured-at   ISO 8601 UTC
+ *
+ *     Inside it, #verdict-word / #verdict-subline / #verdict-answer are the
+ *     three text nodes to swap. Call track('verdict_shown', …) after you do.
+ *
+ * The days-since counter is separate: #days-since-value carries
+ * data-last-incident="YYYY-MM-DD" so you can recompute it client-side without
+ * waiting for a rebuild.
+ *
+ * Both boxes sit inside `.verdict-slot`, which reserves
+ * --size-verdict-slot of block size. Keep your island inside that height and
+ * hydration causes zero layout shift.
+ * ===========================================================================
+ */
+import type { Aggregates, StatusSnapshot } from '../lib/types';
+import { computeVerdict } from '../lib/verdict';
+import aggregatesJson from '../generated/aggregates.json';
+import snapshotJson from '../generated/snapshot.json';
+
+const aggregates = aggregatesJson as Aggregates;
+const snapshot = snapshotJson as unknown as StatusSnapshot;
+
+/** True once index.astro fills the slot with Track C's <LiveVerdict>. */
+const hasLiveVerdict = Astro.slots.has('verdict');
+
+// Same function the island calls on every poll, so the server-rendered word
+// and the first hydrated word are identical for identical inputs.
+const verdict = computeVerdict({
+  live: snapshot.live,
+  open: snapshot.openIncidents,
+});
+/** Heat 0–2 is a "no"; 3+ is a "yes". Text, never colour alone. */
+const isCooked = verdict.heat >= 3;
+const shortAnswer = isCooked ? 'Yes.' : 'No.';
+
+const nf = new Intl.NumberFormat('en-US');
+const dayFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+const timeFmt = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+  timeZone: 'UTC',
+});
+
+/** "Room Temperature" at the short-word size overflows small viewports. */
+const verdictSizeClass = verdict.word.length > 10 ? 'text-verdict-long' : 'text-verdict';
+
+const daysSince = aggregates.daysSince;
+const lastIncidentLabel = dayFmt.format(new Date(`${aggregates.lastIncidentDate}T00:00:00Z`));
+const capturedLabel = timeFmt.format(new Date(snapshot.capturedAt));
+const componentsTotal = snapshot.live?.components.length ?? 0;
+const degradedCount = snapshot.live?.degradedCount ?? 0;
+---
+
+<section class="shell pt-10 pb-8 sm:pt-16 sm:pb-12" aria-labelledby="hero-heading">
+  <p
+    class="mb-3 flex items-center justify-center gap-2 text-center text-xs font-semibold tracking-[0.14em] text-ink-subtle uppercase"
+  >
+    <span aria-hidden="true" class="inline-block size-2 rounded-full bg-accent"></span>
+    Unofficial GitLab.com outage tracker
+  </p>
+
+  <h1
+    id="hero-heading"
+    class="text-center text-headline font-extrabold text-balance text-ink"
+  >
+    Is GitLab Cooked?
+  </h1>
+
+  <!-- Track C: hydrate here. See the contract at the top of this file. -->
+  <div
+    id="verdict-mount"
+    class="verdict-slot mt-6"
+    data-verdict-key={verdict.key}
+    data-heat={String(verdict.heat)}
+    data-disagreement={String(verdict.disagreement)}
+    data-source="snapshot"
+    data-captured-at={snapshot.capturedAt}
+    role="status"
+    aria-live="polite"
+  >
+    <slot name="verdict">
+      <p id="verdict-answer" class="text-lg font-semibold text-ink-muted sm:text-xl">
+        Short answer: <span class="text-ink">{shortAnswer}</span>
+      </p>
+      <p
+        id="verdict-word"
+        class:list={['mt-1 font-black text-balance text-accent', verdictSizeClass]}
+      >
+        {verdict.word}
+      </p>
+      <p id="verdict-subline" class="mt-2 max-w-xl text-center text-base text-ink-muted sm:text-lg">
+        {verdict.subline}
+      </p>
+    </slot>
+  </div>
+
+  {
+    !hasLiveVerdict && verdict.disagreement && (
+      <p class="mx-auto mt-4 max-w-2xl rounded-lg border border-border bg-alarm-soft px-4 py-2.5 text-center text-sm text-ink">
+        <strong class="font-semibold">Heads up:</strong> the status page and the incident tracker
+        currently disagree. We show both below and let you decide.
+      </p>
+    )
+  }
+
+  <div class="mx-auto mt-8 grid max-w-3xl gap-3 sm:mt-10 sm:grid-cols-2">
+    <p class="card flex flex-col items-center gap-1 px-5 py-5 text-center">
+      <span
+        id="days-since-value"
+        data-last-incident={aggregates.lastIncidentDate}
+        class="text-4xl leading-none font-bold tracking-tight tabular-nums text-ink sm:text-5xl"
+      >
+        {nf.format(daysSince)}
+      </span>
+      <span class="text-sm font-medium text-ink-muted">
+        {daysSince === 1 ? 'day' : 'days'} since the last customer-facing production incident
+      </span>
+      <span class="text-xs text-ink-subtle">
+        Last one: <time datetime={aggregates.lastIncidentDate}>{lastIncidentLabel}</time>
+      </span>
+    </p>
+
+    <p class="card flex flex-col items-center gap-1 px-5 py-5 text-center">
+      <span class="text-4xl leading-none font-bold tracking-tight tabular-nums text-ink sm:text-5xl">
+        {nf.format(componentsTotal - degradedCount)}<span class="text-ink-subtle">/{componentsTotal}</span>
+      </span>
+      <span class="text-sm font-medium text-ink-muted">
+        status page components reporting operational
+      </span>
+      <span class="text-xs text-ink-subtle">
+        Captured <time datetime={snapshot.capturedAt}>{capturedLabel} UTC</time>
+      </span>
+    </p>
+  </div>
+
+  <p class="mx-auto mt-5 max-w-2xl text-center text-sm text-ink-subtle">
+    Not affiliated with GitLab. Numbers come from{' '}
+    <a
+      class="font-medium text-accent underline underline-offset-2 hover:text-accent-hover"
+      href="https://status.gitlab.com/"
+      rel="noopener noreferrer nofollow"
+      target="_blank">status.gitlab.com</a
+    >{' '}and GitLab’s{' '}
+    <a
+      class="font-medium text-accent underline underline-offset-2 hover:text-accent-hover"
+      href="https://gitlab.com/gitlab-com/gl-infra/production/-/issues"
+      rel="noopener noreferrer nofollow"
+      target="_blank">public infrastructure tracker</a
+    >.
+  </p>
+</section>

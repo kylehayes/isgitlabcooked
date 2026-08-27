@@ -15,7 +15,7 @@
     "test": "vitest run",
     "sync": "tsx scripts/sync.ts",
     "validate": "tsx scripts/validate.ts",
-    "snapshot": "tsx scripts/snapshot-status.ts"
+    "snapshot": "node scripts/snapshot-status.mjs"
   },
   "dependencies": {
     "@astrojs/preact": "^6.0.4",

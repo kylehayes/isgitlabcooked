@@ -1,0 +1,87 @@
+---
+import type { Aggregates } from '../lib/types';
+import aggregatesJson from '../generated/aggregates.json';
+
+const aggregates = aggregatesJson as Aggregates;
+const builtFmt = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+  timeZone: 'UTC',
+});
+const builtLabel = builtFmt.format(new Date(aggregates.generatedAt));
+const year = new Date(aggregates.generatedAt).getUTCFullYear();
+---
+
+<footer class="mt-auto border-t border-border bg-surface-sunken">
+  <div class="shell grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="sm:col-span-2 lg:col-span-2">
+      <p class="text-sm font-bold text-ink">Is GitLab Cooked?</p>
+      <p class="mt-2 max-w-md text-sm leading-relaxed text-ink-muted">
+        An unofficial, unaffiliated look at how often GitLab.com falls over, built entirely from
+        data GitLab publishes itself. No endorsement is claimed or implied. If something here looks
+        wrong, the source data is one click away — go check.
+      </p>
+    </div>
+
+    <nav aria-label="Site" class="text-sm">
+      <h2 class="text-xs font-semibold tracking-[0.1em] text-ink-subtle uppercase">This site</h2>
+      <ul class="mt-3 space-y-2" role="list">
+        <li><a class="text-ink-muted hover:text-accent hover:underline" href="/">Live verdict</a></li>
+        <li>
+          <a class="text-ink-muted hover:text-accent hover:underline" href="/about/"
+            >About &amp; methodology</a
+          >
+        </li>
+        <li>
+          <a class="text-ink-muted hover:text-accent hover:underline" href="/sitemap-index.xml"
+            >Sitemap</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Data sources" class="text-sm">
+      <h2 class="text-xs font-semibold tracking-[0.1em] text-ink-subtle uppercase">Sources</h2>
+      <ul class="mt-3 space-y-2" role="list">
+        <li>
+          <a
+            class="text-ink-muted hover:text-accent hover:underline"
+            href="https://status.gitlab.com/"
+            rel="noopener noreferrer nofollow"
+            target="_blank">status.gitlab.com<span aria-hidden="true"> ↗</span></a
+          >
+        </li>
+        <li>
+          <a
+            class="text-ink-muted hover:text-accent hover:underline"
+            href="https://gitlab.com/gitlab-com/gl-infra/production/-/issues"
+            rel="noopener noreferrer nofollow"
+            target="_blank">Incident tracker<span aria-hidden="true"> ↗</span></a
+          >
+        </li>
+        <li>
+          <a
+            class="text-ink-muted hover:text-accent hover:underline"
+            href="https://handbook.gitlab.com/handbook/engineering/infrastructure/incident-management/"
+            rel="noopener noreferrer nofollow"
+            target="_blank">Incident handbook<span aria-hidden="true"> ↗</span></a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="border-t border-border">
+    <div
+      class="shell flex flex-col gap-2 py-5 text-xs text-ink-subtle sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>
+        © {year} Is GitLab Cooked? · “GitLab” is a trademark of GitLab Inc., used here only to
+        identify what is being measured.
+      </p>
+      <p>
+        Data rebuilt <time datetime={aggregates.generatedAt}>{builtLabel} UTC</time>
+      </p>
+    </div>
+  </div>
+</footer>
