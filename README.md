@@ -164,6 +164,43 @@ Cloudflare Pages:
 The apex is canonical everywhere: `astro.config.mjs` `site`, the `<link rel="canonical">` in
 `BaseLayout.astro`, the sitemap, and `public/robots.txt` all use it.
 
+## Deploying (Cloudflare Workers static assets)
+
+`wrangler.jsonc` declares this as a **purely static** site: `assets.directory: "./dist"`, no
+`main` entrypoint, and deliberately **no `@astrojs/cloudflare` adapter**.
+
+That file must stay committed. Without it, `wrangler deploy` runs its auto-config, decides the
+project needs the adapter, runs `astro add cloudflare`, and rebuilds — and that rebuild fails,
+because the SSR build tries to bundle the native `@resvg/resvg-js` `.node` binary that
+`og.png.ts` only uses at build time. The first build succeeds and the auto-config rebuild is the
+one that breaks, which makes the logs confusing.
+
+`_headers` and `_redirects` are supported on Workers static assets exactly as they were on Pages;
+they are parsed rather than served.
+
+Verify a deploy without publishing:
+
+```bash
+npm run build
+npx wrangler deploy --dry-run   # should report ~31 files, no bindings, no auto-config
+```
+
+### Build settings
+
+- Build command: `npm run build`
+- Output directory: `dist`
+- Deploy command: `npx wrangler deploy`
+- Environment variables (Production **and** Preview): `PUBLIC_GA4_ID=G-12R6NZBGGZ`
+- Node version comes from `.nvmrc` (`22`, i.e. latest 22.x — `astro`'s `undici` needs >= 22.19).
+
+### Turn off non-production branch builds
+
+**Set preview deployments to None.** The `status-log` branch receives a commit every 10 minutes
+(~4,300/month) against a 500 build/month free-tier ceiling. Building non-production branches
+would exhaust the quota within days, after which the site silently freezes on its last deploy
+while still looking live. If you later want PR previews, use custom branch control and exclude
+`status-log`.
+
 ## GitHub Actions secret
 
 The scheduled sync workflow needs one secret:

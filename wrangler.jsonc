@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "isgitlabcooked",
+  "compatibility_date": "2026-08-27",
+
+  // This is a PURELY STATIC site: `astro build` with output:'static' emits
+  // plain HTML/CSS/JS into dist/, and the only dynamic behaviour (the live
+  // verdict) is a client-side fetch to status.gitlab.com.
+  //
+  // There is deliberately NO "main" entrypoint and NO @astrojs/cloudflare
+  // adapter. Without this config file, `wrangler deploy` runs its auto-config,
+  // decides the project needs the adapter, runs `astro add cloudflare`, and
+  // rebuilds — which fails, because the SSR build tries to bundle the native
+  // @resvg/resvg-js .node binary that og.png.ts uses at BUILD time only.
+  // Keeping this file present is what stops that from happening.
+  "assets": {
+    "directory": "./dist",
+    // We ship a real 404 page; don't fall back to index.html like an SPA.
+    "not_found_handling": "404-page"
+  }
+}
