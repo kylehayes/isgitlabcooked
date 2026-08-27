@@ -1,8 +1,8 @@
 {
   "schema": 1,
-  "lastSyncedAt": "2026-08-27T15:35:59.819Z",
+  "lastSyncedAt": "2026-08-27T18:28:26.945Z",
   "lastFullSyncAt": "2026-08-27T13:32:46.832Z",
-  "durationsBackfilledThrough": 0,
+  "durationsBackfilledThrough": 22811,
   "counts": {
     "total": 7259,
     "bySeverity": {
