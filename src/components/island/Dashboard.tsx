@@ -216,6 +216,7 @@ function Loaded(props: {
           years={years}
           minutes={downtime.minutes}
           incidents={downtime.incidents}
+          allIncidents={downtime.allIncidents}
           maxYear={now.getUTCFullYear()}
           maxMonth={now.getUTCMonth()}
           hasQuality0={hasQuality0}

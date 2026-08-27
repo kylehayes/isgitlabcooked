@@ -28,7 +28,10 @@ function humanMinutes(m: number): string {
 export default function DowntimeHeatmap(props: {
   years: number[];
   minutes: Float64Array;
+  /** Incidents that contributed measured minutes (quality 0 only). */
   incidents: Uint16Array;
+  /** Every filtered incident in the month, measured or not. */
+  allIncidents: Uint16Array;
   /** Cells after this (year, month) have not happened yet. */
   maxYear: number;
   maxMonth: number;
@@ -52,20 +55,43 @@ export default function DowntimeHeatmap(props: {
         }
         const mins = props.minutes[idx] ?? 0;
         const n = props.incidents[idx] ?? 0;
+        const nAll = props.allIncidents[idx] ?? 0;
+        // A month with S1/S2 incidents but zero measured minutes is NOT a quiet
+        // month - it is a month we cannot measure. GitLab only started applying
+        // Incident::Mitigated partway through 2020, so 2018-2019 have 115 real
+        // S1/S2 incidents and 0% duration coverage. Drawing those the same as
+        // "none" would claim GitLab had no downtime in its two worst-documented
+        // years. Hatch them instead: a different kind of state, not a colder one.
+        const unmeasured = nAll > 0 && mins <= 0;
         out.push({
           x: m,
           y,
-          bin: binOf(DOWNTIME_BINS, mins),
-          label: `${MONTHS[m]} ${year}: ${humanMinutes(mins)} across ${n} S1/S2 incident${
-            n === 1 ? '' : 's'
-          }`,
-          cellText: `${Math.round(mins)} min / ${n}`,
+          bin: unmeasured ? 0 : binOf(DOWNTIME_BINS, mins),
+          hatched: unmeasured,
+          label: unmeasured
+            ? `${MONTHS[m]} ${year}: ${nAll} S1/S2 incident${nAll === 1 ? '' : 's'}, duration not recorded`
+            : `${MONTHS[m]} ${year}: ${humanMinutes(mins)} across ${n} S1/S2 incident${
+                n === 1 ? '' : 's'
+              }`,
+          cellText: unmeasured ? `not measured / ${nAll}` : `${Math.round(mins)} min / ${n}`,
           key: `${year}-${String(m + 1).padStart(2, '0')}`,
         });
       }
     });
     return out;
-  }, [props.years, props.minutes, props.incidents, props.maxYear, props.maxMonth]);
+  }, [
+    props.years,
+    props.minutes,
+    props.incidents,
+    props.allIncidents,
+    props.maxYear,
+    props.maxMonth,
+  ]);
+
+  const unmeasuredMonths = useMemo(
+    () => cells.filter((c) => c.hatched).length,
+    [cells],
+  );
 
   const total = useMemo(() => {
     let t = 0;
@@ -119,6 +145,14 @@ export default function DowntimeHeatmap(props: {
             </>
           )}
         </p>
+        {unmeasuredMonths > 0 && (
+          <p class="mt-1 text-sm text-ink-muted">
+            Hatched months had S1/S2 incidents whose duration was never recorded — GitLab only
+            began applying the <code class="font-mono text-xs">Incident::Mitigated</code> label
+            partway through 2020, so most of 2018 and 2019 cannot be measured. Those are blank
+            for lack of data, not for lack of outages.
+          </p>
+        )}
       </figcaption>
 
       <div class="-mx-1 overflow-x-auto px-1 pb-1">
@@ -143,6 +177,22 @@ export default function DowntimeHeatmap(props: {
 
       <div class="mt-3">
         <Legend title="S1/S2 downtime in the month" bins={DOWNTIME_BINS} />
+        {unmeasuredMonths > 0 && (
+          <p class="mt-2 flex items-center gap-2 text-xs text-ink-muted">
+            <svg width="14" height="14" aria-hidden="true" class="shrink-0">
+              <rect
+                width="14"
+                height="14"
+                rx="3"
+                fill="var(--color-heat-q0)"
+                stroke="currentColor"
+                stroke-opacity="0.35"
+              />
+              <rect width="14" height="14" rx="3" fill="url(#igc-hatch)" />
+            </svg>
+            incidents occurred, duration not recorded
+          </p>
+        )}
       </div>
     </figure>
   );

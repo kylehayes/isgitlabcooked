@@ -80,11 +80,25 @@ export function downtimeGrid(
   rows: DecodedRow[],
   epoch: string,
   years: number[],
-): { minutes: Float64Array; incidents: Uint16Array } {
+): { minutes: Float64Array; incidents: Uint16Array; allIncidents: Uint16Array } {
   const byMonth = downtimeByMonth(rows, epoch);
   const minutes = new Float64Array(years.length * 12);
+  // Incidents that CONTRIBUTED measured minutes (quality 0 only).
   const incidents = new Uint16Array(years.length * 12);
+  // Every filtered incident in the month, measured or not. The difference
+  // between the two is what tells the chart "we could not measure this month"
+  // apart from "this month was quiet" - without it, 2018-2019 (115 real S1/S2
+  // incidents, 0% duration coverage) would render identically to zero downtime.
+  const allIncidents = new Uint16Array(years.length * 12);
   const y0 = years[0] ?? 0;
+
+  const cell = (dayIndex: number): number => {
+    const key = monthKeyFromDayIndex(dayIndex, epoch);
+    const yi = Number(key.slice(0, 4)) - y0;
+    const mi = Number(key.slice(5, 7)) - 1;
+    if (yi < 0 || yi >= years.length || mi < 0 || mi > 11) return -1;
+    return yi * 12 + mi;
+  };
 
   for (const [key, mins] of Object.entries(byMonth)) {
     const yi = Number(key.slice(0, 4)) - y0;
@@ -93,14 +107,13 @@ export function downtimeGrid(
     minutes[yi * 12 + mi] = mins;
   }
   for (const r of rows) {
+    const idx = cell(r.d);
+    if (idx < 0) continue;
+    allIncidents[idx]!++;
     if (r.q !== 0 || r.m < 0) continue;
-    const key = monthKeyFromDayIndex(r.d, epoch);
-    const yi = Number(key.slice(0, 4)) - y0;
-    const mi = Number(key.slice(5, 7)) - 1;
-    if (yi < 0 || yi >= years.length || mi < 0 || mi > 11) continue;
-    incidents[yi * 12 + mi]!++;
+    incidents[idx]!++;
   }
-  return { minutes, incidents };
+  return { minutes, incidents, allIncidents };
 }
 
 /** 7 rows (UTC weekday, Mon..Sun) x 24 cols (UTC hour). */
