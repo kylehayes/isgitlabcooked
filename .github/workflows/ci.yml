@@ -24,6 +24,18 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+
+      # Order matters. src/generated/** and public/data/** are gitignored build
+      # outputs, and .astro/types.d.ts (which declares import.meta.env and
+      # astro:env) is generated too. A clean checkout has none of them, so
+      # `tsc --noEmit` must not run first - it fails on missing JSON modules
+      # and ImportMeta. Both are derived from the committed data/ directory.
+      - name: Generate Astro types
+        run: npx astro sync
+
+      - name: Build dataset artifacts
+        run: npx tsx scripts/build-dataset.ts
+
       - run: npx tsc --noEmit
       - run: npx vitest run
-      - run: npm run build
+      - run: npx astro build
