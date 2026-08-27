@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.env
+src/generated/
+public/data/
+.DS_Store

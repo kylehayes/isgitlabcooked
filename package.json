@@ -1,0 +1,37 @@
+{
+  "name": "isgitlabcooked",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "tsx scripts/build-dataset.ts",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check && tsc --noEmit",
+    "test": "vitest run",
+    "sync": "tsx scripts/sync.ts",
+    "validate": "tsx scripts/validate.ts",
+    "snapshot": "tsx scripts/snapshot-status.ts"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^6.0.4",
+    "@astrojs/sitemap": "^3.7.3",
+    "@preact/signals": "^2.2.0",
+    "astro": "^7.2.8",
+    "preact": "^10.27.0"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "@tailwindcss/vite": "^4.1.0",
+    "satori": "^0.18.0",
+    "tailwindcss": "^4.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0",
+    "zod": "^4.1.0"
+  }
+}
