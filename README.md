@@ -134,7 +134,10 @@ Cloudflare Pages:
 - `/data/*` is immutable for a year — safe because those filenames are content-hashed.
 - `/` gets a short browser TTL with a longer edge TTL, so a rebuild propagates quickly.
 - `X-Content-Type-Options` and `Referrer-Policy` on everything.
-- `www.isgitlabcooked.com` 301s to the apex, preserving the path.
+- `public/_redirects` is intentionally empty of domain rules. Cloudflare Pages `_redirects`
+  accepts **path sources only** — domain-level redirects are explicitly unsupported, so a
+  `https://www.isgitlabcooked.com/* ...` line would be silently ignored. The www redirect is a
+  dashboard Redirect Rule instead; see below.
 
 ### Custom domain
 
@@ -142,9 +145,15 @@ Cloudflare Pages:
    nameservers.
 2. In **Workers & Pages → the project → Custom domains**, add `isgitlabcooked.com`. Cloudflare
    creates the proxied apex `CNAME` (flattened) automatically.
-3. Add `www.isgitlabcooked.com` as a second custom domain on the same project. Serving it — rather
-   than only redirecting at DNS — is what lets `public/_redirects` return a clean 301 to the apex
-   with the path intact.
+3. Create the www redirect in the dashboard, **not** in `_redirects`. Go to the
+   `isgitlabcooked.com` zone → **Rules → Redirect Rules → Create rule**:
+   - When incoming requests match: `Hostname` `equals` `www.isgitlabcooked.com`
+   - Then: Dynamic redirect, `concat("https://isgitlabcooked.com", http.request.uri.path)`
+   - Status 301, "Preserve query string" on
+
+   Single Redirects are included on the free plan (10 rules). You also need a proxied DNS record
+   for `www` for the rule to fire — an `AAAA` `www` → `100::` set to Proxied is the usual trick,
+   since the rule intercepts before origin.
 4. Wait for the edge certificate to go active, then confirm:
 
    ```bash

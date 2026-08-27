@@ -1,1 +1,10 @@
-https://www.isgitlabcooked.com/* https://isgitlabcooked.com/:splat 301
+# Cloudflare Pages _redirects only accepts PATH sources, not full URLs.
+# Domain-level redirects are explicitly unsupported here:
+# https://developers.cloudflare.com/pages/configuration/redirects/
+#
+# So the www -> apex 301 canNOT live in this file. It is configured as a
+# Redirect Rule in the Cloudflare dashboard instead — see README, "Custom
+# domain". A `https://www.isgitlabcooked.com/* ...` line here would be
+# silently ignored, which is worse than having no rule at all.
+#
+# This file is intentionally otherwise empty. Add path-level redirects below.
