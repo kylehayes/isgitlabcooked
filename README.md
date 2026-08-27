@@ -190,7 +190,21 @@ npx wrangler deploy --dry-run   # should report ~31 files, no bindings, no auto-
 - Build command: `npm run build`
 - Output directory: `dist`
 - Deploy command: `npx wrangler deploy`
-- Environment variables (Production **and** Preview): `PUBLIC_GA4_ID=G-12R6NZBGGZ`
+- `PUBLIC_GA4_ID=G-12R6NZBGGZ` must be set as a **build** variable:
+  **Settings → Build → Build Variables and Secrets**.
+
+  Not **Settings → Variables**. Those are *runtime* bindings, injected into a Worker's `env` at
+  request time, and Cloudflare will refuse them on a static-assets-only Worker because there is
+  no code to bind them to — which is correct, and misleading if you are looking for the wrong
+  thing. `PUBLIC_GA4_ID` is read by `astro build` and baked into the HTML as a literal; nothing
+  reads it at request time. Build settings apply to the *next* build, so save then redeploy.
+
+  If it is missing the site still builds and works — `Analytics.astro` emits nothing rather than
+  a broken tag. Silent absence is the failure mode, so verify explicitly:
+
+  ```bash
+  curl -s https://isgitlabcooked.com/ | grep -c googletagmanager   # expect 1
+  ```
 - Node version comes from `.nvmrc` (`22`, i.e. latest 22.x — `astro`'s `undici` needs >= 22.19).
 
 ### Turn off non-production branch builds
