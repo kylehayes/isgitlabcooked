@@ -78,6 +78,26 @@ jobs:
             echo "no data changes; skipping commit (and therefore skipping a Pages build)"
             exit 0
           fi
+
+          # meta.json's lastSyncedAt cursor moves on EVERY run, so the check
+          # above never fires on its own: without this, a one-line timestamp
+          # would trigger a Cloudflare Pages build every three hours forever.
+          # If the cursor is the only thing that moved, throw it away and skip.
+          # Letting the cursor lag is harmless and self-correcting - the next
+          # run just uses a slightly wider updated_after window, and a wider
+          # window that finds real changes produces a real commit, which resets
+          # the cursor. Verified against: cursor-only, cursor+data, data-only,
+          # no-change, and new-file.
+          substantive=$(git diff --staged -U0 -- data/ \
+            | grep -E '^[+-][^+-]' \
+            | grep -v 'lastSyncedAt' \
+            | head -c 1)
+          if [ -z "$substantive" ]; then
+            echo "only the sync cursor moved; skipping commit and Pages build"
+            git restore --staged --worktree data/
+            exit 0
+          fi
+
           git commit -m "data: sync $(date -u +%FT%TZ)"
           git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
           git push origin "HEAD:${GITHUB_REF_NAME}"
