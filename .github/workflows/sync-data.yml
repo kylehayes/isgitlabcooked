@@ -56,14 +56,16 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: npx tsx scripts/sync.ts --mode=${{ steps.mode.outputs.value }}
 
-      # Durations need a read_api PAT; the script skips with a warning when the
-      # secret is absent, so this step is safe to always run.
+      # Durations need a read_api PAT. The script already exits 0 with a loud
+      # warning when GITLAB_TOKEN is absent, so this step is safe to always run
+      # and needs NO continue-on-error. That matters: GitLab PATs expire within
+      # a year, and continue-on-error would swallow the resulting 401s, leaving
+      # the run green while the downtime data quietly went stale. Let it fail.
       - name: Backfill durations
         if: steps.mode.outputs.value != 'backfill-durations'
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
         run: npx tsx scripts/sync.ts --mode=backfill-durations
-        continue-on-error: true
 
       # Gate: a bad dataset must never reach the site.
       - name: Validate
