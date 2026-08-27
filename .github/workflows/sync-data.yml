@@ -1,0 +1,83 @@
+name: Sync incident data
+
+on:
+  schedule:
+    # Every 3 hours. Deliberately NOT more often: each commit here triggers a
+    # Cloudflare Pages build, and the free tier allows 500 builds/month.
+    # 8/day is ~248/month, leaving headroom for code pushes and PR previews.
+    # This is safe because the live verdict is fetched in the browser, so the
+    # historical dataset being a few hours stale is invisible to users.
+    - cron: '17 */3 * * *'
+    # Weekly full reconcile, in case an incremental window ever missed something.
+    - cron: '40 4 * * 0'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Sync mode
+        type: choice
+        default: incremental
+        options: [incremental, full, backfill-durations]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-data
+  cancel-in-progress: false   # never abort a half-written sync
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Resolve mode
+        id: mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          elif [ "${{ github.event.schedule }}" = "40 4 * * 0" ]; then
+            echo "value=full" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=incremental" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Sync incidents
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: npx tsx scripts/sync.ts --mode=${{ steps.mode.outputs.value }}
+
+      # Durations need a read_api PAT; the script skips with a warning when the
+      # secret is absent, so this step is safe to always run.
+      - name: Backfill durations
+        if: steps.mode.outputs.value != 'backfill-durations'
+        env:
+          GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
+        run: npx tsx scripts/sync.ts --mode=backfill-durations
+        continue-on-error: true
+
+      # Gate: a bad dataset must never reach the site.
+      - name: Validate
+        run: npx tsx scripts/validate.ts
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "gitlab-cooked-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          if git diff --staged --quiet; then
+            echo "no data changes; skipping commit (and therefore skipping a Pages build)"
+            exit 0
+          fi
+          git commit -m "data: sync $(date -u +%FT%TZ)"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+          git push origin "HEAD:${GITHUB_REF_NAME}"

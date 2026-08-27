@@ -1,0 +1,76 @@
+name: Snapshot GitLab status
+
+# Polls status.gitlab.com every 10 minutes and appends component transitions to
+# the `status-log` branch. Over time this builds the real per-component uptime
+# record that the historical incident tracker cannot provide.
+#
+# Why a separate branch: Cloudflare Pages only builds the production branch, so
+# these ~4,300 commits/month cost ZERO Pages builds. The 3-hourly sync job folds
+# this log into the published dataset.
+#
+# The script is dependency-free plain ESM on purpose — no `npm ci`, no `tsx` —
+# so each run is a few seconds of Actions time rather than ~40.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot-status
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main (for the script)
+        uses: actions/checkout@v6
+        with:
+          path: repo
+          fetch-depth: 1
+          sparse-checkout: scripts/snapshot-status.mjs
+          sparse-checkout-cone-mode: false
+
+      - name: Check out status-log branch (for the data)
+        uses: actions/checkout@v6
+        with:
+          ref: status-log
+          path: log
+          fetch-depth: 1
+        continue-on-error: true
+
+      # First ever run: the status-log branch does not exist yet, so the
+      # checkout above no-ops. Bootstrap an orphan branch in its place.
+      - name: Ensure status-log branch exists
+        run: |
+          if [ ! -d log/.git ]; then
+            echo "bootstrapping orphan status-log branch"
+            mkdir -p log
+            cd log
+            git init -q
+            git remote add origin "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git"
+            git checkout -q --orphan status-log
+          fi
+
+      - name: Poll status
+        run: |
+          node repo/scripts/snapshot-status.mjs \
+            --out=log/status-log.ndjson \
+            --state=log/status-state.json
+
+      - name: Commit if changed
+        working-directory: log
+        run: |
+          git config user.name  "gitlab-cooked-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add status-log.ndjson status-state.json
+          if git diff --staged --quiet; then
+            echo "no transition to record"
+            exit 0
+          fi
+          git commit -m "status: poll $(date -u +%FT%TZ)"
+          git push origin HEAD:status-log
