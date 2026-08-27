@@ -1,0 +1,29 @@
+{
+  "lastPoll": "2026-08-27T15:32:49.224Z",
+  "overall": 500,
+  "components": {
+    "Website": 500,
+    "API": 100,
+    "Git Operations": 100,
+    "Package Registry": 100,
+    "Container Registry": 100,
+    "GitLab Pages": 100,
+    "CI/CD": 500,
+    "CI/CD - Hosted runners on Linux": 100,
+    "CI/CD - Hosted runners on Windows": 100,
+    "CI/CD - Hosted runners on macOS": 100,
+    "CI/CD - Hosted runners for GitLab community contributions": 100,
+    "CI/CD - Self-managed runners": 100,
+    "SAML SSO - GitLab SaaS": 100,
+    "Background Processing": 100,
+    "GitLab Customers Portal": 100,
+    "Support Services": 100,
+    "packages.gitlab.com": 100,
+    "version.gitlab.com": 100,
+    "forum.gitlab.com": 100,
+    "docs.gitlab.com": 100,
+    "Canary": 100,
+    "GitLab Duo": 100,
+    "GitLab agent server for Kubernetes": 100
+  }
+}
