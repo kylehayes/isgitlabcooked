@@ -7253,7 +7253,7 @@
 {"iid":22800,"t":"`milestone/assign_milestone_spec.rb` smoke QA spec is failing on gstg-cny","c":"2026-08-26T23:18:43.653Z","x":null,"u":"2026-08-27T05:44:59.474Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":12,"rc":"Software-Change"}
 {"iid":22801,"t":"Postgres int4 ID capacity saturation on merge_request_diff_files_archived.merge_request_diff_id","c":"2026-08-27T02:22:24.404Z","x":null,"u":"2026-08-27T02:46:46.888Z","st":"opened","sev":4,"ist":"Mitigated","stg":"gprd","svc":132,"rc":null}
 {"iid":22803,"t":"web loadbalancer error rate violating SLO","c":"2026-08-27T06:20:48.462Z","x":null,"u":"2026-08-27T09:20:31.522Z","st":"opened","sev":3,"ist":"Merged","stg":"gprd","svc":4,"rc":null}
-{"iid":22806,"t":"Web service loadbalancer error rate violating SLO","c":"2026-08-27T10:14:18.805Z","x":null,"u":"2026-08-27T14:30:24.191Z","st":"opened","sev":3,"ist":"Mitigated","stg":"gprd","svc":4,"rc":null}
+{"iid":22806,"t":"Web service loadbalancer error rate violating SLO","c":"2026-08-27T10:14:18.805Z","x":null,"u":"2026-08-29T07:33:36.094Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
 {"iid":22807,"t":"patroni-sec CPU saturated","c":"2026-08-27T11:16:18.519Z","x":null,"u":"2026-08-27T15:08:27.590Z","st":"opened","sev":2,"ist":"Resolved","stg":"gprd","svc":128,"rc":null}
 {"iid":22810,"t":"GCP quota utilization on SSD_TOTAL_GB in us-east1","c":"2026-08-27T14:06:58.741Z","x":null,"u":"2026-08-27T14:29:19.148Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524288,"rc":null}
 {"iid":22811,"t":"gitaly goserver traffic cessation on gitaly-07-stor node","c":"2026-08-27T15:05:58.450Z","x":null,"u":"2026-08-27T18:28:10.006Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":1,"rc":null}
@@ -7264,3 +7264,4 @@
 {"iid":22817,"t":"Runaway Dead Tuple Growth across Sec Database","c":"2026-08-27T16:54:11.979Z","x":null,"u":"2026-08-27T21:17:00.717Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":128,"rc":null}
 {"iid":22818,"t":"Upstream ubuntu mirror errors in GSTG and GPRD","c":"2026-08-27T18:04:44.322Z","x":null,"u":"2026-08-27T19:25:27.935Z","st":"opened","sev":3,"ist":"Resolved","stg":"gstg","svc":1,"rc":null}
 {"iid":22819,"t":"Instances per VPC Network reached in CI private shard network","c":"2026-08-27T18:25:28.546Z","x":null,"u":"2026-08-27T20:57:46.755Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":8,"rc":null}
+{"iid":22824,"t":"KAS job_router error rate violating SLO","c":"2026-08-29T03:12:47.456Z","x":null,"u":"2026-08-29T05:07:53.184Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":4096,"rc":null}
