@@ -7266,3 +7266,4 @@
 {"iid":22819,"t":"Instances per VPC Network reached in CI private shard network","c":"2026-08-27T18:25:28.546Z","x":null,"u":"2026-08-27T20:57:46.755Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":8,"rc":null}
 {"iid":22824,"t":"KAS job_router error rate violating SLO","c":"2026-08-29T03:12:47.456Z","x":null,"u":"2026-08-29T10:44:22.093Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":4096,"rc":null}
 {"iid":22825,"t":"runway_ingress apdex 69.54% on duo-workflow-svc","c":"2026-08-29T10:24:19.620Z","x":null,"u":"2026-08-29T14:57:55.380Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":2052,"rc":null}
+{"iid":22826,"t":"Loadbalancer error rate at 0.1554% on web main stage","c":"2026-08-29T21:30:27.828Z","x":null,"u":"2026-08-29T23:17:10.637Z","st":"opened","sev":3,"ist":"Mitigated","stg":"gprd","svc":4,"rc":null}
