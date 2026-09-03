@@ -7282,3 +7282,4 @@
 {"iid":22849,"t":"gprd post-deploy migration failed with WithLockRetries::AttemptsExhaustedError","c":"2026-09-03T03:10:14.157Z","x":null,"u":"2026-09-03T03:28:53.290Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":136,"rc":"DB-Migration"}
 {"iid":22854,"t":"Pods stuck Unschedulable in apt-mirror namespace","c":"2026-09-03T10:02:09.004Z","x":null,"u":"2026-09-03T15:46:20.617Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524293,"rc":null}
 {"iid":22855,"t":"QA failing on gstg and gstg-cny","c":"2026-09-03T11:43:45.653Z","x":null,"u":"2026-09-03T13:25:36.890Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":null}
+{"iid":22856,"t":"declare","c":"2026-09-03T16:51:05.891Z","x":null,"u":"2026-09-03T17:09:24.553Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
