@@ -7283,3 +7283,4 @@
 {"iid":22854,"t":"Pods stuck Unschedulable in apt-mirror namespace","c":"2026-09-03T10:02:09.004Z","x":null,"u":"2026-09-03T15:46:20.617Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524293,"rc":null}
 {"iid":22855,"t":"QA failing on gstg and gstg-cny","c":"2026-09-03T11:43:45.653Z","x":null,"u":"2026-09-03T13:25:36.890Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":null}
 {"iid":22856,"t":"declare","c":"2026-09-03T16:51:05.891Z","x":null,"u":"2026-09-03T17:09:24.553Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
+{"iid":22858,"t":"Chef client hasn't converged successfully on haproxy-main-49-lb-gprd","c":"2026-09-03T21:09:02.110Z","x":null,"u":"2026-09-03T21:23:30.712Z","st":"opened","sev":4,"ist":"Mitigated","stg":"gprd","svc":524292,"rc":null}
