@@ -7287,4 +7287,4 @@
 {"iid":22860,"t":"workhorse error rate violating SLO in us-east1-b","c":"2026-09-04T05:32:35.971Z","x":null,"u":"2026-09-04T06:39:01.676Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
 {"iid":22862,"t":"job_router traffic absent on kas main","c":"2026-09-04T16:21:08.173Z","x":null,"u":"2026-09-04T17:11:35.908Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":4096,"rc":null}
 {"iid":22863,"t":"gitaly goserver apdex SLO violation in cny","c":"2026-09-04T21:29:24.157Z","x":null,"u":"2026-09-04T21:31:24.312Z","st":"opened","sev":3,"ist":"Active","stg":"cny","svc":1,"rc":null}
-{"iid":22866,"t":"Blackbox probes for https://customers.gitlab.com/-/liveness/database,migrations,cache are failing","c":"2026-09-04T23:38:03.590Z","x":null,"u":"2026-09-04T23:38:03.590Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":270468,"rc":null}
+{"iid":22866,"t":"Blackbox probes for https://customers.gitlab.com/-/liveness/database,migrations,cache are failing","c":"2026-09-04T23:38:03.590Z","x":null,"u":"2026-09-05T09:02:00.002Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":270468,"rc":null}
