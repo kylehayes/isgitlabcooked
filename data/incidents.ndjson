@@ -7234,7 +7234,7 @@
 {"iid":22772,"t":"sidekiq_queueing apdex at 23.87% on low-urgency-ci-pipeline shard","c":"2026-08-24T09:13:57.353Z","x":"2026-09-04T00:02:29.978Z","u":"2026-09-04T00:02:29.990Z","st":"closed","sev":3,"ist":"Resolved","stg":"gprd","svc":264,"rc":null}
 {"iid":22773,"t":"Pods slow to become ready due to us-east1-c GCE capacity shortage","c":"2026-08-24T16:54:28.703Z","x":null,"u":"2026-08-31T05:31:15.310Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":524288,"rc":"External-Dependency"}
 {"iid":22774,"t":"pulp_nginx apdex at 95.89% on main stage","c":"2026-08-24T17:24:35.565Z","x":"2026-09-04T00:02:29.005Z","u":"2026-09-04T00:02:29.013Z","st":"closed","sev":3,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
-{"iid":22777,"t":"KAS deployments failing","c":"2026-08-24T20:47:31.507Z","x":null,"u":"2026-08-26T08:27:27.137Z","st":"opened","sev":2,"ist":"Resolved","stg":"gprd","svc":4104,"rc":null}
+{"iid":22777,"t":"KAS deployments failing","c":"2026-08-24T20:47:31.507Z","x":"2026-09-06T00:02:09.978Z","u":"2026-09-06T00:02:09.997Z","st":"closed","sev":2,"ist":"Resolved","stg":"gprd","svc":4104,"rc":null}
 {"iid":22778,"t":"Workhorse apdex violating SLO in cny stage","c":"2026-08-24T21:26:37.050Z","x":null,"u":"2026-08-24T21:48:16.469Z","st":"opened","sev":3,"ist":"Merged","stg":"cny","svc":4,"rc":null}
 {"iid":22780,"t":"Sidekiq execution apdex at 67.55% on urgent-authorized-projects shard","c":"2026-08-25T08:00:23.244Z","x":null,"u":"2026-08-25T09:54:44.037Z","st":"opened","sev":4,"ist":"Merged","stg":"gprd","svc":16640,"rc":null}
 {"iid":22781,"t":"rails_primary_sql apdex at 85.17% on main","c":"2026-08-25T08:23:53.080Z","x":null,"u":"2026-08-25T10:49:47.611Z","st":"opened","sev":4,"ist":"Merged","stg":"gprd","svc":4,"rc":null}
@@ -7289,3 +7289,6 @@
 {"iid":22863,"t":"gitaly goserver apdex SLO violation in cny","c":"2026-09-04T21:29:24.157Z","x":null,"u":"2026-09-04T21:31:24.312Z","st":"opened","sev":3,"ist":"Active","stg":"cny","svc":1,"rc":null}
 {"iid":22866,"t":"Blackbox probes for https://customers.gitlab.com/-/liveness/database,migrations,cache are failing","c":"2026-09-04T23:38:03.590Z","x":null,"u":"2026-09-05T09:02:00.002Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":270468,"rc":null}
 {"iid":22868,"t":"web_pages_server error rate at 0.7501% in us-east1-b","c":"2026-09-05T18:52:04.461Z","x":null,"u":"2026-09-05T19:42:37.109Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
+{"iid":22869,"t":"web_pages_server error rate above SLO in us-east1","c":"2026-09-06T00:28:16.502Z","x":null,"u":"2026-09-06T03:58:17.478Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
+{"iid":22870,"t":"job_router has had no traffic in KAS main stage","c":"2026-09-06T02:04:57.798Z","x":null,"u":"2026-09-06T02:27:13.661Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4096,"rc":null}
+{"iid":22871,"t":"Web loadbalancer error rate violation on main stage","c":"2026-09-06T03:31:24.522Z","x":null,"u":"2026-09-06T03:31:24.522Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":4,"rc":null}
