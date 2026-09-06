@@ -7292,3 +7292,4 @@
 {"iid":22869,"t":"web_pages_server error rate above SLO in us-east1","c":"2026-09-06T00:28:16.502Z","x":null,"u":"2026-09-06T03:58:17.478Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
 {"iid":22870,"t":"job_router has had no traffic in KAS main stage","c":"2026-09-06T02:04:57.798Z","x":null,"u":"2026-09-06T02:27:13.661Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4096,"rc":null}
 {"iid":22871,"t":"Web loadbalancer error rate violation on main stage","c":"2026-09-06T03:31:24.522Z","x":null,"u":"2026-09-06T09:45:36.949Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
+{"iid":22872,"t":"server_unknown error rate at 30.76% on duo-workflow-svc main","c":"2026-09-06T17:02:53.548Z","x":null,"u":"2026-09-06T20:20:53.531Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":2048,"rc":null}
