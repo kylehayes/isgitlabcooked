@@ -1,6 +1,6 @@
 {
-  "lastPoll": "2026-09-10T14:39:34.885Z",
-  "overall": 100,
+  "lastPoll": "2026-09-10T17:51:41.838Z",
+  "overall": 400,
   "components": {
     "Website": 100,
     "API": 100,
@@ -15,7 +15,7 @@
     "CI/CD - Hosted runners for GitLab community contributions": 100,
     "CI/CD - Self-managed runners": 100,
     "SAML SSO - GitLab SaaS": 100,
-    "Background Processing": 100,
+    "Background Processing": 400,
     "GitLab Customers Portal": 100,
     "Support Services": 100,
     "packages.gitlab.com": 100,
