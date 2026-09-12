@@ -7321,4 +7321,5 @@
 {"iid":22918,"t":"Workhorse apdex SLO violation in cny stage","c":"2026-09-11T17:03:23.406Z","x":null,"u":"2026-09-11T20:03:28.969Z","st":"opened","sev":4,"ist":"Resolved","stg":"cny","svc":4,"rc":null}
 {"iid":22920,"t":"Omnibus packages are failing for auto-deploy packages","c":"2026-09-11T19:24:20.639Z","x":null,"u":"2026-09-12T00:20:33.276Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":40,"rc":null}
 {"iid":22922,"t":"Siphon logical replication lag on prd_sec_siphon_backup_slot_01","c":"2026-09-11T23:23:22.616Z","x":null,"u":"2026-09-12T00:17:35.934Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":128,"rc":null}
-{"iid":22924,"t":"server_chat error rate at 6.337% on duo-workflow-svc main","c":"2026-09-12T20:11:18.386Z","x":null,"u":"2026-09-12T20:11:18.386Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":2048,"rc":null}
+{"iid":22924,"t":"server_chat error rate at 6.337% on duo-workflow-svc main","c":"2026-09-12T20:11:18.386Z","x":null,"u":"2026-09-12T22:43:02.069Z","st":"opened","sev":3,"ist":"Mitigated","stg":"gprd","svc":2048,"rc":null}
+{"iid":22925,"t":"Gitaly client_calls error rate on gitaly-05-stor-gprd node","c":"2026-09-12T21:30:06.033Z","x":null,"u":"2026-09-12T22:25:36.921Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":1,"rc":null}
