@@ -7309,7 +7309,7 @@
 {"iid":22897,"t":"Redis memory utilization near max on redis-cluster-shared-state","c":"2026-09-09T15:10:59.186Z","x":null,"u":"2026-09-14T05:20:55.384Z","st":"opened","sev":2,"ist":"Resolved","stg":"gprd","svc":256,"rc":"Saturation"}
 {"iid":22900,"t":"Duo Workflow Service unable to perform requests","c":"2026-09-09T20:40:59.268Z","x":null,"u":"2026-09-10T13:51:39.743Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":2048,"rc":null}
 {"iid":22902,"t":"gstg-cny canary readiness check failing","c":"2026-09-10T10:53:11.442Z","x":null,"u":"2026-09-10T11:45:11.078Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":131072,"rc":null}
-{"iid":22904,"t":"Sidekiq jobs slow to process and being deferred","c":"2026-09-10T15:04:26.065Z","x":null,"u":"2026-09-16T14:37:29.344Z","st":"opened","sev":2,"ist":"Resolved","stg":"gprd","svc":256,"rc":"Saturation"}
+{"iid":22904,"t":"Sidekiq jobs slow to process and being deferred","c":"2026-09-10T15:04:26.065Z","x":null,"u":"2026-09-16T19:22:41.172Z","st":"opened","sev":2,"ist":"Resolved","stg":"gprd","svc":256,"rc":"Saturation"}
 {"iid":22905,"t":"Persistent shared_runner_job_queue_duration apdex violation","c":"2026-09-10T15:22:43.859Z","x":null,"u":"2026-09-10T15:33:48.550Z","st":"opened","sev":3,"ist":"Merged","stg":"gprd","svc":264,"rc":null}
 {"iid":22906,"t":"Last Patroni GCS snapshot did not run successfully","c":"2026-09-10T16:17:31.510Z","x":null,"u":"2026-09-12T03:22:26.259Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":1152,"rc":null}
 {"iid":22908,"t":"Comments are not loading on MRs in gitlab-org/gitlab","c":"2026-09-10T16:44:48.705Z","x":null,"u":"2026-09-10T16:58:33.521Z","st":"opened","sev":3,"ist":"Merged","stg":"gprd","svc":4,"rc":null}
@@ -7335,4 +7335,6 @@
 {"iid":22950,"t":"Intermittent 404 responses for valid FindCommit requests","c":"2026-09-16T03:21:42.640Z","x":null,"u":"2026-09-16T03:21:42.640Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":4,"rc":null}
 {"iid":22953,"t":"server_chat error rate at 6.055% in duo-workflow-svc","c":"2026-09-16T05:49:27.272Z","x":null,"u":"2026-09-16T06:17:28.058Z","st":"opened","sev":4,"ist":"Merged","stg":"gprd","svc":2048,"rc":null}
 {"iid":22954,"t":"Cloud NAT Gateway Port Allocation saturation near capacity","c":"2026-09-16T14:51:35.795Z","x":null,"u":"2026-09-16T15:37:51.599Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524288,"rc":null}
-{"iid":22956,"t":"PubSub messages queuing on pubsub-rails-inf-gprd-sub","c":"2026-09-16T15:33:35.567Z","x":null,"u":"2026-09-16T16:46:11.414Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":260,"rc":null}
+{"iid":22956,"t":"PubSub messages queuing on pubsub-rails-inf-gprd-sub","c":"2026-09-16T15:33:35.567Z","x":null,"u":"2026-09-16T20:01:07.390Z","st":"opened","sev":4,"ist":"Mitigated","stg":"gprd","svc":260,"rc":null}
+{"iid":22958,"t":"gprd-cny k8s deployment is failing","c":"2026-09-16T17:05:02.333Z","x":null,"u":"2026-09-16T18:37:06.750Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":524296,"rc":null}
+{"iid":22959,"t":"Workhorse apdex violating SLO in cny stage","c":"2026-09-16T18:43:19.969Z","x":null,"u":"2026-09-16T18:43:19.969Z","st":"opened","sev":4,"ist":"Active","stg":"cny","svc":4,"rc":null}
