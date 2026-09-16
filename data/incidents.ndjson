@@ -7333,3 +7333,4 @@
 {"iid":22948,"t":"Git history for AIGW rewritten","c":"2026-09-15T23:09:34.571Z","x":null,"u":"2026-09-16T01:37:15.823Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":131072,"rc":null}
 {"iid":22949,"t":"AIGW staging deployments failing due to AWS Bedrock credentials error","c":"2026-09-15T23:17:50.804Z","x":null,"u":"2026-09-16T04:19:57.782Z","st":"opened","sev":3,"ist":"Resolved","stg":"gstg","svc":18440,"rc":null}
 {"iid":22950,"t":"Intermittent 404 responses for valid FindCommit requests","c":"2026-09-16T03:21:42.640Z","x":null,"u":"2026-09-16T03:21:42.640Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":4,"rc":null}
+{"iid":22953,"t":"server_chat error rate at 6.055% in duo-workflow-svc","c":"2026-09-16T05:49:27.272Z","x":null,"u":"2026-09-16T06:17:28.058Z","st":"opened","sev":4,"ist":"Merged","stg":"gprd","svc":2048,"rc":null}
