@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "lastSyncedAt": "2026-09-16T11:32:19.856Z",
+  "lastSyncedAt": "2026-09-16T16:54:19.346Z",
   "lastFullSyncAt": "2026-09-13T09:42:51.795Z",
-  "durationsBackfilledThrough": 22953,
+  "durationsBackfilledThrough": 22956,
   "counts": {
-    "total": 7336,
+    "total": 7338,
     "bySeverity": {
       "0": 157,
       "1": 139,
       "2": 829,
       "3": 3377,
-      "4": 2834
+      "4": 2836
     },
     "byYear": {
       "2018": 110,
@@ -21,7 +21,7 @@
       "2023": 1009,
       "2024": 741,
       "2025": 898,
-      "2026": 990
+      "2026": 992
     }
   },
   "unclassifiedSample": [
