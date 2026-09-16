@@ -7288,7 +7288,7 @@
 {"iid":22862,"t":"job_router traffic absent on kas main","c":"2026-09-04T16:21:08.173Z","x":"2026-09-15T00:04:43.139Z","u":"2026-09-15T00:04:43.145Z","st":"closed","sev":3,"ist":"Resolved","stg":"gprd","svc":4096,"rc":null}
 {"iid":22863,"t":"gitaly goserver apdex SLO violation in cny","c":"2026-09-04T21:29:24.157Z","x":null,"u":"2026-09-07T18:33:12.200Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":1,"rc":null}
 {"iid":22866,"t":"Blackbox probes for https://customers.gitlab.com/-/liveness/database,migrations,cache are failing","c":"2026-09-04T23:38:03.590Z","x":null,"u":"2026-09-08T07:34:41.055Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":270468,"rc":null}
-{"iid":22868,"t":"web_pages_server error rate at 0.7501% in us-east1-b","c":"2026-09-05T18:52:04.461Z","x":null,"u":"2026-09-05T19:42:37.109Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
+{"iid":22868,"t":"web_pages_server error rate at 0.7501% in us-east1-b","c":"2026-09-05T18:52:04.461Z","x":"2026-09-16T00:02:29.368Z","u":"2026-09-16T00:02:29.373Z","st":"closed","sev":3,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
 {"iid":22869,"t":"web_pages_server error rate above SLO in us-east1","c":"2026-09-06T00:28:16.502Z","x":null,"u":"2026-09-06T03:58:17.478Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
 {"iid":22870,"t":"job_router has had no traffic in KAS main stage","c":"2026-09-06T02:04:57.798Z","x":null,"u":"2026-09-06T02:27:13.661Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4096,"rc":null}
 {"iid":22871,"t":"Web loadbalancer error rate violation on main stage","c":"2026-09-06T03:31:24.522Z","x":null,"u":"2026-09-07T02:02:21.917Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
@@ -7330,3 +7330,6 @@
 {"iid":22942,"t":"QA failing on gstg-cny","c":"2026-09-15T09:24:00.486Z","x":null,"u":"2026-09-15T14:03:02.569Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":null}
 {"iid":22943,"t":"The runner_api_requests SLI of the ci-runners service on shard `gstg-windows-runner` has not reported any traffic in the past 30m","c":"2026-09-15T09:33:02.424Z","x":null,"u":"2026-09-15T09:33:53.421Z","st":"opened","sev":4,"ist":"Resolved","stg":"gstg","svc":10,"rc":null}
 {"iid":22946,"t":"PGBouncer client connections per process nearing capacity","c":"2026-09-15T13:15:22.751Z","x":null,"u":"2026-09-15T16:28:59.259Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":128,"rc":null}
+{"iid":22948,"t":"Git history for AIGW rewritten","c":"2026-09-15T23:09:34.571Z","x":null,"u":"2026-09-16T01:37:15.823Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":131072,"rc":null}
+{"iid":22949,"t":"AIGW staging deployments failing due to AWS Bedrock credentials error","c":"2026-09-15T23:17:50.804Z","x":null,"u":"2026-09-16T04:19:57.782Z","st":"opened","sev":3,"ist":"Resolved","stg":"gstg","svc":18440,"rc":null}
+{"iid":22950,"t":"Intermittent 404 responses for valid FindCommit requests","c":"2026-09-16T03:21:42.640Z","x":null,"u":"2026-09-16T03:21:42.640Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":4,"rc":null}
