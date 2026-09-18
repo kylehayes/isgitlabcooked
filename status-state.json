@@ -1,10 +1,10 @@
 {
-  "lastPoll": "2026-09-18T13:42:36.980Z",
-  "overall": 400,
+  "lastPoll": "2026-09-18T17:15:42.789Z",
+  "overall": 100,
   "components": {
-    "Website": 400,
+    "Website": 100,
     "API": 100,
-    "Git Operations": 400,
+    "Git Operations": 100,
     "Package Registry": 100,
     "Container Registry": 100,
     "GitLab Pages": 100,
