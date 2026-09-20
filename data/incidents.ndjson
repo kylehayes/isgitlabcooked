@@ -7348,3 +7348,4 @@
 {"iid":22972,"t":"server_chat error rate 6.091% on duo-workflow-svc main","c":"2026-09-18T04:44:12.669Z","x":null,"u":"2026-09-18T11:33:42.837Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":2048,"rc":null}
 {"iid":22973,"t":"Errors on job environments actions","c":"2026-09-18T06:59:55.302Z","x":null,"u":"2026-09-18T13:44:45.386Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
 {"iid":22979,"t":"web_pages_server error rate 1.064% in us-east1","c":"2026-09-20T06:00:30.375Z","x":null,"u":"2026-09-20T06:17:13.204Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
+{"iid":22980,"t":"Loadbalancer error rate 0.2511% in cny stage","c":"2026-09-20T13:06:34.984Z","x":null,"u":"2026-09-20T13:08:41.669Z","st":"opened","sev":4,"ist":"Resolved","stg":"cny","svc":4,"rc":null}
