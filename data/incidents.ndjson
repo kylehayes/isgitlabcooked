@@ -7337,12 +7337,12 @@
 {"iid":22954,"t":"Cloud NAT Gateway Port Allocation saturation near capacity","c":"2026-09-16T14:51:35.795Z","x":null,"u":"2026-09-16T15:37:51.599Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524288,"rc":null}
 {"iid":22956,"t":"PubSub messages queuing on pubsub-rails-inf-gprd-sub","c":"2026-09-16T15:33:35.567Z","x":null,"u":"2026-09-16T22:30:52.510Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":260,"rc":null}
 {"iid":22958,"t":"gprd-cny k8s deployment is failing","c":"2026-09-16T17:05:02.333Z","x":null,"u":"2026-09-21T10:51:25.818Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":524296,"rc":"Known-Software-Issue"}
-{"iid":22959,"t":"Workhorse apdex violating SLO in cny stage","c":"2026-09-16T18:43:19.969Z","x":null,"u":"2026-09-16T18:43:19.969Z","st":"opened","sev":4,"ist":"Active","stg":"cny","svc":4,"rc":null}
+{"iid":22959,"t":"Workhorse apdex violating SLO in cny stage","c":"2026-09-16T18:43:19.969Z","x":null,"u":"2026-09-21T14:34:10.413Z","st":"opened","sev":4,"ist":"Resolved","stg":"cny","svc":4,"rc":null}
 {"iid":22961,"t":"Web service loadbalancer SLI error rate above SLO","c":"2026-09-17T08:53:22.554Z","x":null,"u":"2026-09-17T20:30:53.180Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
-{"iid":22963,"t":"QA failure on gstg-cny and gstg","c":"2026-09-17T11:07:32.934Z","x":null,"u":"2026-09-21T11:16:09.447Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":"Feature-Flag"}
+{"iid":22963,"t":"QA failure on gstg-cny and gstg","c":"2026-09-17T11:07:32.934Z","x":null,"u":"2026-09-21T13:19:43.355Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":"Feature-Flag"}
 {"iid":22964,"t":"Chef client hasn't converged on haproxy-main-54-lb-gprd","c":"2026-09-17T14:06:53.880Z","x":null,"u":"2026-09-17T14:57:07.766Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":524292,"rc":null}
 {"iid":22965,"t":"kibana ingestion for logging in rails is stalled/behind","c":"2026-09-17T14:44:05.856Z","x":null,"u":"2026-09-17T14:44:37.164Z","st":"opened","sev":3,"ist":"Merged","stg":"gprd","svc":262148,"rc":null}
-{"iid":22966,"t":"PubSub messages queuing on pubsub-rails-inf-gprd-sub","c":"2026-09-17T16:21:03.849Z","x":null,"u":"2026-09-17T22:46:45.208Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":260,"rc":null}
+{"iid":22966,"t":"PubSub messages queuing on pubsub-rails-inf-gprd-sub","c":"2026-09-17T16:21:03.849Z","x":null,"u":"2026-09-21T16:09:39.722Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":260,"rc":null}
 {"iid":22967,"t":"gstg-cny failing due to migration database error","c":"2026-09-17T17:53:38.091Z","x":null,"u":"2026-09-21T10:56:06.267Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":128,"rc":"DB-Migration"}
 {"iid":22970,"t":"500 errors when accessing projects","c":"2026-09-17T20:33:07.589Z","x":null,"u":"2026-09-17T20:38:48.708Z","st":"opened","sev":2,"ist":"Merged","stg":"gprd","svc":4,"rc":null}
 {"iid":22972,"t":"server_chat error rate 6.091% on duo-workflow-svc main","c":"2026-09-18T04:44:12.669Z","x":null,"u":"2026-09-18T11:33:42.837Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":2048,"rc":null}
@@ -7350,3 +7350,6 @@
 {"iid":22979,"t":"web_pages_server error rate 1.064% in us-east1","c":"2026-09-20T06:00:30.375Z","x":null,"u":"2026-09-20T06:17:13.204Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":68,"rc":null}
 {"iid":22980,"t":"Loadbalancer error rate 0.2511% in cny stage","c":"2026-09-20T13:06:34.984Z","x":null,"u":"2026-09-20T13:08:41.669Z","st":"opened","sev":4,"ist":"Resolved","stg":"cny","svc":4,"rc":null}
 {"iid":22981,"t":"Reports of performance degradation in Singapore region","c":"2026-09-21T11:00:22.919Z","x":null,"u":"2026-09-21T12:25:53.982Z","st":"opened","sev":2,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
+{"iid":22982,"t":"18-11-stable branch on CNG is failing, blocking patch release","c":"2026-09-21T14:48:59.891Z","x":null,"u":"2026-09-21T14:48:59.891Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":8,"rc":null}
+{"iid":22983,"t":"PubSub queuing high on pubsub-rails-inf-gprd-sub","c":"2026-09-21T16:14:30.377Z","x":null,"u":"2026-09-21T16:25:58.462Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":260,"rc":null}
+{"iid":22985,"t":"gstg-cny-assets failing in auto-deployment","c":"2026-09-21T19:56:56.983Z","x":null,"u":"2026-09-21T19:56:56.983Z","st":"opened","sev":3,"ist":"Active","stg":"cny","svc":8,"rc":null}
