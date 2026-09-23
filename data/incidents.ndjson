@@ -7355,6 +7355,7 @@
 {"iid":22985,"t":"gstg-cny-assets failing in auto-deployment","c":"2026-09-21T19:56:56.983Z","x":null,"u":"2026-09-21T23:26:15.931Z","st":"opened","sev":3,"ist":"Resolved","stg":"cny","svc":8,"rc":null}
 {"iid":22986,"t":"Deployment of 01M32CCCACPFAQMKW9VXBKKASH failed on cellsprod","c":"2026-09-21T20:02:10.570Z","x":null,"u":"2026-09-22T00:16:45.861Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":8,"rc":null}
 {"iid":22988,"t":"Amazon Q unavailable due to stale signing key","c":"2026-09-21T23:51:37.589Z","x":null,"u":"2026-09-22T01:13:07.092Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":131072,"rc":null}
-{"iid":22989,"t":"Post-deploy migrations failed in production due to LockWaitTimeout","c":"2026-09-22T06:07:46.959Z","x":null,"u":"2026-09-22T18:36:59.283Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":136,"rc":null}
+{"iid":22989,"t":"Post-deploy migrations failed in production due to LockWaitTimeout","c":"2026-09-22T06:07:46.959Z","x":null,"u":"2026-09-23T10:58:19.853Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":136,"rc":null}
 {"iid":22990,"t":"rails_primary_sql apdex below SLO in patroni main","c":"2026-09-22T07:29:54.978Z","x":null,"u":"2026-09-22T11:53:27.496Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":132,"rc":null}
 {"iid":22997,"t":"vault istio_public_ingress apdex at 99.28%","c":"2026-09-22T20:10:01.471Z","x":null,"u":"2026-09-22T21:38:44.920Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":540676,"rc":null}
+{"iid":23002,"t":"Mock incident please ignore","c":"2026-09-23T11:18:19.705Z","x":null,"u":"2026-09-23T11:21:49.423Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":131072,"rc":null}
