@@ -7360,3 +7360,5 @@
 {"iid":22997,"t":"vault istio_public_ingress apdex at 99.28%","c":"2026-09-22T20:10:01.471Z","x":null,"u":"2026-09-23T16:16:15.600Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":540676,"rc":null}
 {"iid":23002,"t":"Mock incident please ignore","c":"2026-09-23T11:18:19.705Z","x":null,"u":"2026-09-23T11:21:49.423Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":131072,"rc":null}
 {"iid":23003,"t":"PubSub queuing high on pubsub-sidekiq-inf-gprd-sub","c":"2026-09-23T12:57:24.173Z","x":null,"u":"2026-09-23T13:47:17.787Z","st":"opened","sev":3,"ist":"Merged","stg":"gprd","svc":256,"rc":null}
+{"iid":23005,"t":"PGBouncer Client Connections per Process close to capacity","c":"2026-09-23T18:32:39.429Z","x":null,"u":"2026-09-23T18:32:39.429Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":128,"rc":null}
+{"iid":23007,"t":"Loadbalancer SLI error rate at 0.1504% on web main stage","c":"2026-09-23T19:36:52.730Z","x":null,"u":"2026-09-23T19:36:52.730Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":4,"rc":null}
