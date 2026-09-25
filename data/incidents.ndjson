@@ -7368,6 +7368,7 @@
 {"iid":23016,"t":"Disk space for postgres-archive on main stage nearing capacity in 6h","c":"2026-09-24T21:31:44.665Z","x":null,"u":"2026-09-24T21:34:42.155Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":1152,"rc":null}
 {"iid":23019,"t":"web_pages_server error rate violating SLO in us-east1","c":"2026-09-24T23:31:12.438Z","x":null,"u":"2026-09-24T23:41:34.444Z","st":"opened","sev":2,"ist":"Merged","stg":"gprd","svc":68,"rc":null}
 {"iid":23020,"t":"Sidekiq queueing apdex at 96.08% on urgent-other shard","c":"2026-09-25T10:24:11.859Z","x":null,"u":"2026-09-25T14:31:24.212Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":256,"rc":null}
-{"iid":23021,"t":"git service deployment health check blocking auto-deploy","c":"2026-09-25T11:44:44.918Z","x":null,"u":"2026-09-25T13:56:19.086Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":9,"rc":null}
+{"iid":23021,"t":"git service deployment health check blocking auto-deploy","c":"2026-09-25T11:44:44.918Z","x":null,"u":"2026-09-25T19:14:16.720Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":9,"rc":null}
 {"iid":23022,"t":"Spike in Sidekiq jobs deferred due to `database_health_check` since ~07:00 UTC","c":"2026-09-25T11:57:09.951Z","x":null,"u":"2026-09-25T11:57:09.951Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":384,"rc":null}
 {"iid":23023,"t":"workhorse apdex SLO violation in us-east1","c":"2026-09-25T12:00:34.168Z","x":null,"u":"2026-09-25T15:39:25.365Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":4,"rc":null}
+{"iid":23024,"t":"Security Reports not loading for some users","c":"2026-09-25T18:36:49.664Z","x":null,"u":"2026-09-25T19:41:14.241Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
