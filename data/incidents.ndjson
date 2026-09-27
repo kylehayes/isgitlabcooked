@@ -7369,6 +7369,6 @@
 {"iid":23020,"t":"Sidekiq queueing apdex at 96.08% on urgent-other shard","c":"2026-09-25T10:24:11.859Z","x":null,"u":"2026-09-25T14:31:24.212Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":256,"rc":null}
 {"iid":23021,"t":"git service deployment health check blocking auto-deploy","c":"2026-09-25T11:44:44.918Z","x":null,"u":"2026-09-25T19:14:16.720Z","st":"opened","sev":3,"ist":"Resolved","stg":"gprd","svc":9,"rc":null}
 {"iid":23022,"t":"Spike in Sidekiq jobs deferred due to `database_health_check` since ~07:00 UTC","c":"2026-09-25T11:57:09.951Z","x":null,"u":"2026-09-25T11:57:09.951Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":384,"rc":null}
-{"iid":23023,"t":"workhorse apdex SLO violation in us-east1","c":"2026-09-25T12:00:34.168Z","x":null,"u":"2026-09-27T11:46:09.886Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
+{"iid":23023,"t":"workhorse apdex SLO violation in us-east1","c":"2026-09-25T12:00:34.168Z","x":null,"u":"2026-09-27T13:54:12.692Z","st":"opened","sev":4,"ist":"Resolved","stg":"gprd","svc":4,"rc":null}
 {"iid":23024,"t":"Security Reports not loading for some users","c":"2026-09-25T18:36:49.664Z","x":null,"u":"2026-09-25T23:35:35.529Z","st":"opened","sev":3,"ist":"Active","stg":"gprd","svc":131072,"rc":null}
-{"iid":23030,"t":"workhorse_auth_api error rate violating SLO in us-east1","c":"2026-09-26T23:27:03.521Z","x":null,"u":"2026-09-27T06:45:27.084Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":6,"rc":null}
+{"iid":23030,"t":"workhorse_auth_api error rate violating SLO in us-east1","c":"2026-09-26T23:27:03.521Z","x":null,"u":"2026-09-27T13:33:42.435Z","st":"opened","sev":4,"ist":"Active","stg":"gprd","svc":6,"rc":null}
