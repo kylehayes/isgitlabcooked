@@ -1,6 +1,6 @@
 {
-  "lastPoll": "2026-10-01T21:47:25.816Z",
-  "overall": 300,
+  "lastPoll": "2026-10-02T01:05:51.505Z",
+  "overall": 100,
   "components": {
     "Website": 100,
     "API": 100,
@@ -8,8 +8,8 @@
     "Package Registry": 100,
     "Container Registry": 100,
     "GitLab Pages": 100,
-    "CI/CD": 300,
-    "CI/CD - Hosted runners on Linux": 300,
+    "CI/CD": 100,
+    "CI/CD - Hosted runners on Linux": 100,
     "CI/CD - Hosted runners on Windows": 100,
     "CI/CD - Hosted runners on macOS": 100,
     "CI/CD - Hosted runners for GitLab community contributions": 100,
