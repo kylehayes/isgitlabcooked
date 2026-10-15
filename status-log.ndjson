@@ -32,3 +32,4 @@
 {"ts":"2026-10-13T23:58:00.974Z","kind":"transition","overall":100,"changes":[{"name":"CI/CD","from":300,"to":100},{"name":"CI/CD - Hosted runners on Linux","from":300,"to":100}]}
 {"ts":"2026-10-14T14:35:50.986Z","kind":"transition","overall":400,"changes":[{"name":"CI/CD","from":100,"to":400}]}
 {"ts":"2026-10-14T18:51:06.285Z","kind":"transition","overall":100,"changes":[{"name":"CI/CD","from":400,"to":100}]}
+{"ts":"2026-10-15T04:57:43.428Z","kind":"transition","overall":500,"changes":[{"name":"GitLab Customers Portal","from":100,"to":500}]}
