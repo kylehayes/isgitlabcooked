@@ -38,3 +38,4 @@
 {"ts":"2026-10-15T21:38:07.317Z","kind":"transition","overall":100,"changes":[{"name":"CI/CD","from":300,"to":100},{"name":"CI/CD - Hosted runners on Linux","from":300,"to":100},{"name":"CI/CD - Hosted runners on Windows","from":300,"to":100},{"name":"CI/CD - Hosted runners on macOS","from":300,"to":100},{"name":"CI/CD - Hosted runners for GitLab community contributions","from":300,"to":100}]}
 {"ts":"2026-10-16T12:42:01.751Z","kind":"transition","overall":300,"changes":[{"name":"CI/CD","from":100,"to":300}]}
 {"ts":"2026-10-16T16:59:30.008Z","kind":"transition","overall":400,"changes":[{"name":"CI/CD","from":300,"to":100},{"name":"Canary","from":100,"to":400},{"name":"GitLab Duo","from":100,"to":300}]}
+{"ts":"2026-10-16T19:50:58.945Z","kind":"transition","overall":100,"changes":[{"name":"Canary","from":400,"to":100},{"name":"GitLab Duo","from":300,"to":100}]}

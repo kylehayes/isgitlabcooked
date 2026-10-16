@@ -1,6 +1,6 @@
 {
-  "lastPoll": "2026-10-16T16:59:30.008Z",
-  "overall": 400,
+  "lastPoll": "2026-10-16T19:50:58.945Z",
+  "overall": 100,
   "components": {
     "Website": 100,
     "API": 100,
@@ -22,8 +22,8 @@
     "version.gitlab.com": 100,
     "forum.gitlab.com": 100,
     "docs.gitlab.com": 100,
-    "Canary": 400,
-    "GitLab Duo": 300,
+    "Canary": 100,
+    "GitLab Duo": 100,
     "GitLab agent server for Kubernetes": 100
   }
 }
