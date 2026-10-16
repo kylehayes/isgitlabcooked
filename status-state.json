@@ -1,6 +1,6 @@
 {
-  "lastPoll": "2026-10-16T12:42:01.751Z",
-  "overall": 300,
+  "lastPoll": "2026-10-16T16:59:30.008Z",
+  "overall": 400,
   "components": {
     "Website": 100,
     "API": 100,
@@ -8,7 +8,7 @@
     "Package Registry": 100,
     "Container Registry": 100,
     "GitLab Pages": 100,
-    "CI/CD": 300,
+    "CI/CD": 100,
     "CI/CD - Hosted runners on Linux": 100,
     "CI/CD - Hosted runners on Windows": 100,
     "CI/CD - Hosted runners on macOS": 100,
@@ -22,8 +22,8 @@
     "version.gitlab.com": 100,
     "forum.gitlab.com": 100,
     "docs.gitlab.com": 100,
-    "Canary": 100,
-    "GitLab Duo": 100,
+    "Canary": 400,
+    "GitLab Duo": 300,
     "GitLab agent server for Kubernetes": 100
   }
 }
