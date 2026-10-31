@@ -42,3 +42,4 @@
 {"ts":"2026-10-20T23:23:40.614Z","kind":"transition","overall":500,"changes":[{"name":"GitLab Customers Portal","from":100,"to":500}]}
 {"ts":"2026-10-21T01:47:43.047Z","kind":"transition","overall":100,"changes":[{"name":"GitLab Customers Portal","from":500,"to":100}]}
 {"ts":"2026-10-31T11:10:29.076Z","kind":"transition","overall":200,"changes":[{"name":"GitLab Customers Portal","from":100,"to":200}]}
+{"ts":"2026-10-31T16:08:19.291Z","kind":"transition","overall":100,"changes":[{"name":"GitLab Customers Portal","from":200,"to":100}]}
